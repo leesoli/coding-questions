@@ -123,17 +123,20 @@ const pair_with_targetsum = function(arr, target_sum) {
   let start = 0;
   let end = arr.length - 1;
   while (start < end) {
-    if (arr[start] + arr[end] > target_sum) {
-      end--;
-    } else if (arr[start] + arr[end] < target_sum) {
-      start++;
-    } else if (arr[start] + arr[end] === target_sum) {
+    const sum = arr[start] + arr[end];
+     if (sum === target_sum) {
       return [start, end]
     }
+    if (sum > target_sum) {
+      end--;
+    } else if (sum < target_sum) {
+      start++;
+    }
   }
-
   return [-1, -1];
 }
 
 console.log(pair_with_targetsum([2, 5, 9, 11], 11)) // should return [0, 2]
+
+//remove duplicates 10/29
 
