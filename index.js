@@ -120,15 +120,16 @@
 //pair with target sum 10/28
 
 const pair_with_targetsum = function(arr, target_sum) {
-  let startPointer = 0;
-  let endPointer = arr.length - 1;
-  if (arr[startPointer] + arr[endPointer] === target_sum) {
-    return [startPointer, endPointer]
-  }
-  if (arr[startPointer] + arr[endPointer] > target_sum) {
-    endPointer--;
-  } else if (arr[startPointer] + arr[endPointer] > target_sum) {
-    startPointer++;
+  let start = 0;
+  let end = arr.length - 1;
+  while (start < end) {
+    if (arr[start] + arr[end] > target_sum) {
+      end--;
+    } else if (arr[start] + arr[end] < target_sum) {
+      start++;
+    } else if (arr[start] + arr[end] === target_sum) {
+      return [start, end]
+    }
   }
 
   return [-1, -1];
