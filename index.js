@@ -55,46 +55,64 @@
 //Words Concatenation 9/20
 //1. store each word from input words array into hash map
 //2. find each word that exists in str, keep track of words that are found
-//3. find the substring that all words from hashmap exists
+//3. shrink window when window is bigger than length of all the concat. words
 //4. store the index each time concatenation of all words are found
-//remove word that is the length of that letter
+//5. remove index from array if window moved past index array (result words)
 
+//wordFrequency = {cat: 1, fox: 1}
+//resultIndices = [], wordsCount = 2, wordLength = 3
+//i = 0; (9 - (2 * 3) + 1
 const find_word_concatenation = function(str, words) {
-  result_indices = [];
-  let map = {};
-  let windowStart = 0;
-  let matched;
-
-  for (let i = 0; i < words.length; i++) {
-    if (map[words[i]] === undefined) {
-      map[words[i]] = 1;
-    } else {
-      map[words[i]]++;
-    }
-  }
-  // console.log(map)
-
-  for (let windowEnd = 0; windowEnd < str.length; windowEnd++) {
-    let char = str.substring(windowStart, windowEnd + 1);
-    if (char in map) {
-      map[char]--;
-    }
-    if (map[char] === 0) {
-      matched++;
-    }
-    if (matched === words.length) {
-      result_indices.push(windowStart);
-    }
-
-    if (windowEnd - 1 >= words.join('').length) {
-      if (windowStart === )
-      windowStart++;
-    }
+  if (words.length === 0 || words[0].length === 0) {
+    return [];
   }
 
+  wordFrequency = {};
 
-  return result_indices;
-};
+  words.forEach((word) => {
+    if (!(word in wordFrequency)) {
+      wordFrequency[word] = 0;
+    }
+    wordFrequency[word] += 1;
+  });
 
+  const resultIndices = [],
+    wordsCount = words.length;
+  wordLength = words[0].length;
+
+  // iterates through str
+  for (i = 0; i < (str.length - wordsCount * wordLength) + 1; i++)
+   {
+    const wordsSeen = {};
+    //creates substring to see if it is in hashmap
+    for (j = 0; j < wordsCount; j++) {
+      next_word_index = i + j * wordLength;
+      //0 + 0 * 3 = 0 + 3 = 3
+      //0 + 1 * 3 = 3 + 3 = 6
+      // Get the next word from the string
+      word = str.substring(next_word_index, next_word_index + wordLength);
+      if (!(word in wordFrequency)) { // Break if we don't need this word
+        break;
+      }
+
+      // Add the word to the 'wordsSeen' map if found in wordFreq
+      if (!(word in wordsSeen)) {
+        wordsSeen[word] = 0;
+      }
+      wordsSeen[word] += 1;
+
+      // no need to process further if the word has higher frequency than required
+      if (wordsSeen[word] > (wordFrequency[word] || 0)) {
+        break;
+      }
+
+      if (j + 1 === wordsCount) { // Store index if we have found all the words
+        resultIndices.push(i);
+      }
+    }
+  }
+
+  return resultIndices;
+}
 console.log(find_word_concatenation("catfoxcat", ["cat", "fox"]))
 //Output: [0, 3]
