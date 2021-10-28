@@ -62,57 +62,77 @@
 //wordFrequency = {cat: 1, fox: 1}
 //resultIndices = [], wordsCount = 2, wordLength = 3
 //i = 0; (9 - (2 * 3) + 1
-const find_word_concatenation = function(str, words) {
-  if (words.length === 0 || words[0].length === 0) {
-    return [];
-  }
+// const find_word_concatenation = function(str, words) {
+//   if (words.length === 0 || words[0].length === 0) {
+//     return [];
+//   }
 
-  wordFrequency = {};
+//   wordFrequency = {};
 
-  words.forEach((word) => {
-    if (!(word in wordFrequency)) {
-      wordFrequency[word] = 0;
-    }
-    wordFrequency[word] += 1;
-  });
+//   words.forEach((word) => {
+//     if (!(word in wordFrequency)) {
+//       wordFrequency[word] = 0;
+//     }
+//     wordFrequency[word] += 1;
+//   });
 
-  const resultIndices = [],
-    wordsCount = words.length;
-  wordLength = words[0].length;
+//   const resultIndices = [],
+//     wordsCount = words.length;
+//   wordLength = words[0].length;
 
-  // iterates through str
-  for (i = 0; i < (str.length - wordsCount * wordLength) + 1; i++)
-   {
-    const wordsSeen = {};
-    //creates substring to see if it is in hashmap
-    for (j = 0; j < wordsCount; j++) {
-      next_word_index = i + j * wordLength;
-      //0 + 0 * 3 = 0 + 3 = 3
-      //0 + 1 * 3 = 3 + 3 = 6
-      // Get the next word from the string
-      word = str.substring(next_word_index, next_word_index + wordLength);
-      if (!(word in wordFrequency)) { // Break if we don't need this word
-        break;
-      }
+//   // iterates through str
+//   for (i = 0; i < (str.length - wordsCount * wordLength) + 1; i++)
+//    {
+//     const wordsSeen = {};
+//     //creates substring to see if it is in hashmap
+//     for (j = 0; j < wordsCount; j++) {
+//       next_word_index = i + j * wordLength;
+//       //0 + 0 * 3 = 0 + 3 = 3
+//       //0 + 1 * 3 = 3 + 3 = 6
+//       // Get the next word from the string
+//       word = str.substring(next_word_index, next_word_index + wordLength);
+//       if (!(word in wordFrequency)) { // Break if we don't need this word
+//         break;
+//       }
 
-      // Add the word to the 'wordsSeen' map if found in wordFreq
-      if (!(word in wordsSeen)) {
-        wordsSeen[word] = 0;
-      }
-      wordsSeen[word] += 1;
+//       // Add the word to the 'wordsSeen' map if found in wordFreq
+//       if (!(word in wordsSeen)) {
+//         wordsSeen[word] = 0;
+//       }
+//       wordsSeen[word] += 1;
 
-      // no need to process further if the word has higher frequency than required
-      if (wordsSeen[word] > (wordFrequency[word] || 0)) {
-        break;
-      }
+//       // no need to process further if the word has higher frequency than required
+//       if (wordsSeen[word] > (wordFrequency[word] || 0)) {
+//         break;
+//       }
 
-      if (j + 1 === wordsCount) { // Store index if we have found all the words
-        resultIndices.push(i);
-      }
-    }
-  }
+//       if (j + 1 === wordsCount) { // Store index if we have found all the words
+//         resultIndices.push(i);
+//       }
+//     }
+//   }
 
-  return resultIndices;
-}
-console.log(find_word_concatenation("catfoxcat", ["cat", "fox"]))
+//   return resultIndices;
+// }
+// console.log(find_word_concatenation("catfoxcat", ["cat", "fox"]))
 //Output: [0, 3]
+
+//pair with target sum 10/28
+
+const pair_with_targetsum = function(arr, target_sum) {
+  let startPointer = 0;
+  let endPointer = arr.length - 1;
+  if (arr[startPointer] + arr[endPointer] === target_sum) {
+    return [startPointer, endPointer]
+  }
+  if (arr[startPointer] + arr[endPointer] > target_sum) {
+    endPointer--;
+  } else if (arr[startPointer] + arr[endPointer] > target_sum) {
+    startPointer++;
+  }
+
+  return [-1, -1];
+}
+
+console.log(pair_with_targetsum([2, 5, 9, 11], 11)) // should return [0, 2]
+
