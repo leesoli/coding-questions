@@ -119,24 +119,55 @@
 
 //pair with target sum 10/28
 
-const pair_with_targetsum = function(arr, target_sum) {
-  let start = 0;
-  let end = arr.length - 1;
-  while (start < end) {
-    const sum = arr[start] + arr[end];
-     if (sum === target_sum) {
-      return [start, end]
-    }
-    if (sum > target_sum) {
-      end--;
-    } else if (sum < target_sum) {
-      start++;
-    }
-  }
-  return [-1, -1];
-}
+// const pair_with_targetsum = function(arr, target_sum) {
+//   let start = 0;
+//   let end = arr.length - 1;
+//   while (start < end) {
+//     const sum = arr[start] + arr[end];
+//      if (sum === target_sum) {
+//       return [start, end]
+//     }
+//     if (sum > target_sum) {
+//       end--;
+//     } else if (sum < target_sum) {
+//       start++;
+//     }
+//   }
+//   return [-1, -1];
+// }
 
-console.log(pair_with_targetsum([2, 5, 9, 11], 11)) // should return [0, 2]
+// console.log(pair_with_targetsum([2, 5, 9, 11], 11)) // should return [0, 2]
 
 //remove duplicates 10/29
 
+//keep a count of all the unique numbers
+//have variable to keep count of all unique numbers
+// count = 0
+// 2 => count = 1
+//3 => count = 2
+//3 => count = 2
+//6 => count = 3
+//9 => count = 4
+
+const remove_duplicates = function(arr) {
+  let nextNonduplicate = 1;
+  let i = 1;
+  while (i < arr.length) {
+    if (arr[nextNonduplicate - 1] !== arr[i]) {
+      arr[nextNonduplicate] = arr[i];
+      nextNonduplicate++;
+    }
+    i++;
+  }
+  return nextNonduplicate;
+}
+
+console.log(remove_duplicates([2, 3, 3, 3, 6, 9, 9])) // output = 4
+
+//NND = 3, i = 5
+// arr[0] !== arr[1] => (2 !== 3)
+// arr[1]  arr[2]  => (3 === 3)
+// arr[1]. arr[3] => (3 === 3)
+// arr[1]. arr[4] => (3 !== 6)
+//arr[2] arr[4] => (3 !== 9) 
+// need to reassign value in the array so that when compared to the next value in array, it points to the last unique value.
