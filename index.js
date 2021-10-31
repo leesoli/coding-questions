@@ -149,20 +149,20 @@
 //6 => count = 3
 //9 => count = 4
 
-const remove_duplicates = function(arr) {
-  let nextNonduplicate = 1;
-  let i = 1;
-  while (i < arr.length) {
-    if (arr[nextNonduplicate - 1] !== arr[i]) {
-      arr[nextNonduplicate] = arr[i];
-      nextNonduplicate++;
-    }
-    i++;
-  }
-  return nextNonduplicate;
-}
+// const remove_duplicates = function(arr) {
+//   let nextNonduplicate = 1;
+//   let i = 1;
+//   while (i < arr.length) {
+//     if (arr[nextNonduplicate - 1] !== arr[i]) {
+//       arr[nextNonduplicate] = arr[i];
+//       nextNonduplicate++;
+//     }
+//     i++;
+//   }
+//   return nextNonduplicate;
+// }
 
-console.log(remove_duplicates([2, 3, 3, 3, 6, 9, 9])) // output = 4
+// console.log(remove_duplicates([2, 3, 3, 3, 6, 9, 9])) // output = 4
 
 //NND = 3, i = 5
 // arr[0] !== arr[1] => (2 !== 3)
@@ -171,3 +171,33 @@ console.log(remove_duplicates([2, 3, 3, 3, 6, 9, 9])) // output = 4
 // arr[1]. arr[4] => (3 !== 6)
 //arr[2] arr[4] => (3 !== 9) 
 // need to reassign value in the array so that when compared to the next value in array, it points to the last unique value.
+
+// make squares 10/30 
+
+  const make_squares = function(arr) {
+    squares = [];
+    let left = 0;
+    let right = arr.length;
+    while (left < right) {
+      if (arr[left] < 0) {
+        if (arr[right - 1] >= Math.abs(arr[left])) {
+          squares.unshift(arr[right - 1] ** 2);
+          right--;
+        } else {
+          squares.unshift(arr[left] ** 2);
+          left++;
+        }
+      }
+      squares.unshift(arr[left] ** 2);
+      left++;
+    }
+  
+  return squares;
+};
+//if the number is negative, compare to the last number.
+//push the square to the end of the array
+//if number is 0 or greater, move to next number.
+
+console.log(make_squares([-2, -1, 0, 2, 3]))
+//Expected output: [0, 1, 4, 4, 9]
+
