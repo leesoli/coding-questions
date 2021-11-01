@@ -173,30 +173,29 @@
 // need to reassign value in the array so that when compared to the next value in array, it points to the last unique value.
 
 // make squares 10/30 
+//create array and fill with values equal to 0;
+//compare square values and whichever is bigger add to the end of the array. decrement the endpoint
 
   const make_squares = function(arr) {
-    squares = [];
+    const n = arr.length;
+    let squares = Array(n).fill(0);
     let left = 0;
-    let right = arr.length;
-    while (left < right) {
-      if (arr[left] < 0) {
-        if (arr[right - 1] >= Math.abs(arr[left])) {
-          squares.unshift(arr[right - 1] ** 2);
-          right--;
-        } else {
-          squares.unshift(arr[left] ** 2);
-          left++;
-        }
+    let right = n - 1;
+    let highestIndex = n - 1;
+    while (left <= right) {
+      let leftSquare = arr[left] ** 2;
+      let rightSquare = arr[right] ** 2;
+      if (leftSquare > rightSquare) {
+        squares[highestIndex] = leftSquare;
+        left++;
+      } else {
+        squares[highestIndex] = rightSquare;
+        right--;
       }
-      squares.unshift(arr[left] ** 2);
-      left++;
+      highestIndex--;
     }
-  
   return squares;
 };
-//if the number is negative, compare to the last number.
-//push the square to the end of the array
-//if number is 0 or greater, move to next number.
 
 console.log(make_squares([-2, -1, 0, 2, 3]))
 //Expected output: [0, 1, 4, 4, 9]
