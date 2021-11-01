@@ -176,27 +176,71 @@
 //create array and fill with values equal to 0;
 //compare square values and whichever is bigger add to the end of the array. decrement the endpoint
 
-  const make_squares = function(arr) {
-    const n = arr.length;
-    let squares = Array(n).fill(0);
-    let left = 0;
-    let right = n - 1;
-    let highestIndex = n - 1;
-    while (left <= right) {
-      let leftSquare = arr[left] ** 2;
-      let rightSquare = arr[right] ** 2;
-      if (leftSquare > rightSquare) {
-        squares[highestIndex] = leftSquare;
-        left++;
-      } else {
-        squares[highestIndex] = rightSquare;
-        right--;
-      }
-      highestIndex--;
-    }
-  return squares;
-};
+//   const make_squares = function(arr) {
+//     const n = arr.length;
+//     let squares = Array(n).fill(0);
+//     let left = 0;
+//     let right = n - 1;
+//     let highestIndex = n - 1;
+//     while (left <= right) {
+//       let leftSquare = arr[left] ** 2;
+//       let rightSquare = arr[right] ** 2;
+//       if (leftSquare > rightSquare) {
+//         squares[highestIndex] = leftSquare;
+//         left++;
+//       } else {
+//         squares[highestIndex] = rightSquare;
+//         right--;
+//       }
+//       highestIndex--;
+//     }
+//   return squares;
+// };
 
-console.log(make_squares([-2, -1, 0, 2, 3]))
+// console.log(make_squares([-2, -1, 0, 2, 3]))
 //Expected output: [0, 1, 4, 4, 9]
 
+// 10/31 triplet sum to 0
+// Given an array of unsorted numbers, find all unique triplets in it that add up to zero.
+
+//arr needs to be sorted in order
+//at each end whichever number is greater, look for numbers on the opposite end that when added equal that number.
+
+const search_triplets = function(arr) {
+  triplets = [];
+  arr.sort((a, b) => a - b);
+  // console.log(arr);
+  let left = 0;
+  let right = arr.length - 1;
+  while (left <= right) {
+    //if left value is negative, look for values from the rightSquare
+    if (arr[right] < 0 || arr[left] > 0) {
+      break;
+    };
+   
+    if (Math.abs(arr[left]) > arr[right]) {
+      for (i = right; i >= 0; i--) {
+        const targetPair = Math.abs(arr[left]) - arr[i];
+        if (arr.includes(targetPair) && targetPair < arr[i]) {
+          triplets.push([arr[left], targetPair, arr[i]]);
+        }
+      }
+      left++;
+    } else {
+      for (j = left; j <= right; j++) {
+        const targetPair = -1 * (arr[right] + arr[j]);
+        console.log(targetPair)
+        if (arr.includes(targetPair) && targetPair !== arr[j] && arr[j] < targetPair) {
+          triplets.push([arr[j], targetPair, arr[right]]);
+        }
+        console.log('done')
+      }
+      right--;
+    }
+  }
+
+  return triplets;
+};
+
+console.log(search_triplets([-5, 2, -1, -2, 3]));
+//expected output => [[-5, 2, 3], [-2, -1, 3]]
