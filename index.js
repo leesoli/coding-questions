@@ -206,41 +206,85 @@
 //arr needs to be sorted in order
 //at each end whichever number is greater, look for numbers on the opposite end that when added equal that number.
 
-const search_triplets = function(arr) {
-  triplets = [];
-  arr.sort((a, b) => a - b);
-  // console.log(arr);
-  let left = 0;
-  let right = arr.length - 1;
-  while (left <= right) {
-    //if left value is negative, look for values from the rightSquare
-    if (arr[right] < 0 || arr[left] > 0) {
-      break;
-    };
+// const search_triplets = function(arr) {
+//   let triplets = [];
+//   arr.sort((a, b) => a - b);
+//   // console.log(arr);
+//   let left = 0;
+//   let right = arr.length - 1;
+//   while (left <= right) {
+//     //if left value is negative, look for values from the rightSquare
+//     if (arr[right] < 0 || arr[left] > 0) {
+//       break;
+//     };
    
-    if (Math.abs(arr[left]) > arr[right]) {
-      for (i = right; i >= 0; i--) {
-        const targetPair = Math.abs(arr[left]) - arr[i];
-        if (arr.includes(targetPair) && targetPair < arr[i]) {
-          triplets.push([arr[left], targetPair, arr[i]]);
-        }
+//     if (Math.abs(arr[left]) > arr[right]) {
+//       for (i = right; i >= 0; i--) {
+//         const targetPair = Math.abs(arr[left]) - arr[i];
+//         if (arr.indexOf(targetPair) !== i && targetPair < arr[i]) {
+//           triplets.push([arr[left], targetPair, arr[i]]);
+//         }
+//       }
+//       left++;
+//     } else {
+//       for (j = left; j <= right; j++) {
+//         const targetPair = (-arr[right] + arr[j])
+//         console.log(targetPair)
+//         if (arr.indexOf(targetPair) !== j && arr[j] < targetPair) {
+//           triplets.push([arr[j], targetPair, arr[right]]);
+//         }
+//         console.log('done')
+//       }
+//       right--;
+//     }
+//   }
+
+//   return triplets;
+// };
+
+//10/2 search triplets review
+//1) need to search each number in arr for two other pairs that gives a sum of 0;
+//2) need to skip duplicates within array
+//3) the pair when added together should equal the current value in the array
+// x + y + z === 0         -x = y + z
+const search_triplets = function(arr) {
+  arr.sort((a, b) => a - b)
+  let triplets = [];
+  for (let i = 0; i < arr.length; i++) {
+    //skip elements that are equal to the next value to avoid duplicate triplets;
+    if (i > 0 && arr[i] === arr[i - 1]) {
+      continue;
+    }
+    find_pair(arr, -arr[i], i + 1, triplets);
+  }
+  return triplets;
+}
+
+const find_pair = function(array, target_sum, left, triplets) {
+  let right = array.length - 1;
+  //find pair that matches target sum and push that value to triplet array
+  while (left < right) {
+    const sum = array[left] + array[right];
+    if (sum === target_sum) {
+      triplets.push([-target_sum, array[left], array[right]]);
+      left++;
+      right--;
+    //skip current left if the previous is the same
+      while (left < right && array[left] === array[left - 1]) {
+        left++;
       }
+      while (left < right && array[right] === array[right + 1]) {
+        right--;
+      }
+    } else if (target_sum > sum) {
       left++;
     } else {
-      for (j = left; j <= right; j++) {
-        const targetPair = -1 * (arr[right] + arr[j]);
-        console.log(targetPair)
-        if (arr.includes(targetPair) && targetPair !== arr[j] && arr[j] < targetPair) {
-          triplets.push([arr[j], targetPair, arr[right]]);
-        }
-        console.log('done')
-      }
       right--;
     }
   }
-
   return triplets;
-};
+}
 
+console.log(search_triplets([-3, 0, 1, 2, -1, 1, -2])) //expected output [-3, 1, 2], [-2, 0, 2], [-2, 1, 1], [-1, 0, 1]
 console.log(search_triplets([-5, 2, -1, -2, 3]));
 //expected output => [[-5, 2, 3], [-2, -1, 3]]
