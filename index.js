@@ -1,3 +1,24 @@
+//12/16 find subsets 
+const find_subsets = (nums) => {
+  let subsets = [];
+  subsets.push([]);
+
+  for (let i = 0; i < nums.length; i++) {
+    const currentNumber = nums[i];
+    const n = subsets.length;
+    for (let j = 0; j < n; j++) {
+      let copy = subsets[j].slice();
+      copy.push(currentNumber);
+      subsets.push(copy);
+    }
+  }
+  return subsets;
+}
+
+console.log(find_subsets([1, 3])) //expected output: [[], [ 1 ], [ 3 ], [ 1, 3 ] ]
+console.log(find_subsets([1, 5, 3])) //expected output: [ [], [ 1 ], [ 5 ], [ 1, 5 ], [ 3 ], [ 1, 3 ], [ 5, 3 ], [ 1, 5, 3 ] ]
+
+
 //String Anagrams 10/20
 
 // const find_string_anagrams = function(str, pattern) {
@@ -247,44 +268,44 @@
 //2) need to skip duplicates within array
 //3) the pair when added together should equal the current value in the array
 // x + y + z === 0         -x = y + z
-const search_triplets = function(arr) {
-  arr.sort((a, b) => a - b)
-  let triplets = [];
-  for (let i = 0; i < arr.length; i++) {
-    //skip elements that are equal to the next value to avoid duplicate triplets;
-    if (i > 0 && arr[i] === arr[i - 1]) {
-      continue;
-    }
-    find_pair(arr, -arr[i], i + 1, triplets);
-  }
-  return triplets;
-}
+// const search_triplets = function(arr) {
+//   arr.sort((a, b) => a - b)
+//   let triplets = [];
+//   for (let i = 0; i < arr.length; i++) {
+//     //skip elements that are equal to the next value to avoid duplicate triplets;
+//     if (i > 0 && arr[i] === arr[i - 1]) {
+//       continue;
+//     }
+//     find_pair(arr, -arr[i], i + 1, triplets);
+//   }
+//   return triplets;
+// }
 
-const find_pair = function(array, target_sum, left, triplets) {
-  let right = array.length - 1;
-  //find pair that matches target sum and push that value to triplet array
-  while (left < right) {
-    const sum = array[left] + array[right];
-    if (sum === target_sum) {
-      triplets.push([-target_sum, array[left], array[right]]);
-      left++;
-      right--;
-    //skip current left if the previous is the same
-      while (left < right && array[left] === array[left - 1]) {
-        left++;
-      }
-      while (left < right && array[right] === array[right + 1]) {
-        right--;
-      }
-    } else if (target_sum > sum) {
-      left++;
-    } else {
-      right--;
-    }
-  }
-  return triplets;
-}
+// const find_pair = function(array, target_sum, left, triplets) {
+//   let right = array.length - 1;
+//   //find pair that matches target sum and push that value to triplet array
+//   while (left < right) {
+//     const sum = array[left] + array[right];
+//     if (sum === target_sum) {
+//       triplets.push([-target_sum, array[left], array[right]]);
+//       left++;
+//       right--;
+//     //skip current left if the previous is the same
+//       while (left < right && array[left] === array[left - 1]) {
+//         left++;
+//       }
+//       while (left < right && array[right] === array[right + 1]) {
+//         right--;
+//       }
+//     } else if (target_sum > sum) {
+//       left++;
+//     } else {
+//       right--;
+//     }
+//   }
+//   return triplets;
+// }
 
-console.log(search_triplets([-3, 0, 1, 2, -1, 1, -2])) //expected output [-3, 1, 2], [-2, 0, 2], [-2, 1, 1], [-1, 0, 1]
-console.log(search_triplets([-5, 2, -1, -2, 3]));
-//expected output => [[-5, 2, 3], [-2, -1, 3]]
+// console.log(search_triplets([-3, 0, 1, 2, -1, 1, -2])) //expected output [-3, 1, 2], [-2, 0, 2], [-2, 1, 1], [-1, 0, 1]
+// console.log(search_triplets([-5, 2, -1, -2, 3]));
+// //expected output => [[-5, 2, 3], [-2, -1, 3]]
