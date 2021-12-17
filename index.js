@@ -1,3 +1,24 @@
+//12/18. remove duplicates
+// Given an array of sorted numbers, remove all duplicates from it. You should not use any extra space; after removing the duplicates in-place return the length of the subarray that has no duplicate in it.
+//can't remove duplicate from array you are iterating through.  
+const remove_duplicates = function(arr) {
+  var uniqueValues = 1;
+  var index = 1;
+  while (index < arr.length) {
+    var currentNum = arr[index];
+    var prevNum = arr[index - 1];
+    if (currentNum !== prevNum) {
+      arr[uniqueValues] = arr[index];
+      uniqueValues++;
+    }
+    index++;
+  }
+  return uniqueValues;
+};
+//linear time to iterate through the array
+console.log(remove_duplicates([2, 3, 3, 3, 6, 9, 9])) //output 4
+console.log(remove_duplicates([2, 2, 2, 11])) //output 2
+
 // 12/18 pair with target sum
 // Given an array of sorted numbers and a target sum, find a pair in the array whose sum is equal to the given target.
 
@@ -21,24 +42,24 @@
 
 //time complexity is O (N) where N is the total number of elemenets in the given array. space complexity in constant space O(1);
 
-const pair_with_targetsum = function(arr, target_sum) {
-  //target_sum - arr[i] = corrNum 
-  //search for corrNum in hashtable;
-  //for each value that doesnt have corrNum, store key in hashtable with index as value
-  //if corrNum found, return indexes
-  const nums = {};
-  for (var elements in arr) {
-    const corrNum = target_sum - arr[elements];
-    if (nums[corrNum]) {
-      return [nums[corrNum], elements];
-    }
-    nums[arr[elements]] = elements;
-  }
-  return [-1, -1];
-}
+// const pair_with_targetsum = function(arr, target_sum) {
+//   //target_sum - arr[i] = corrNum 
+//   //search for corrNum in hashtable;
+//   //for each value that doesnt have corrNum, store key in hashtable with index as value
+//   //if corrNum found, return indexes
+//   const nums = {};
+//   for (var elements in arr) {
+//     const corrNum = target_sum - arr[elements];
+//     if (nums[corrNum]) {
+//       return [nums[corrNum], elements];
+//     }
+//     nums[arr[elements]] = elements;
+//   }
+//   return [-1, -1];
+// }
 
-console.log(pair_with_targetsum([1, 2, 3, 4, 6], 6)) //output: [1, 3]
-console.log(pair_with_targetsum([2, 5, 9, 11], 11)) //output: [0 , 2]
+// console.log(pair_with_targetsum([1, 2, 3, 4, 6], 6)) //output: [1, 3]
+// console.log(pair_with_targetsum([2, 5, 9, 11], 11)) //output: [0 , 2]
 
 //12/17 subsets with duplicates
 // // Given a set of numbers that might contain duplicates, find all of its distinct subsets.
