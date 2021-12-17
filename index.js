@@ -1,25 +1,44 @@
-//12/18. remove duplicates
-// Given an array of sorted numbers, remove all duplicates from it. You should not use any extra space; after removing the duplicates in-place return the length of the subarray that has no duplicate in it.
-//can't remove duplicate from array you are iterating through.  
-const remove_duplicates = function(arr) {
-  var uniqueValues = 1;
-  var index = 1;
+//12/17 remove element
+// Given an unsorted array of numbers and a target ‘key’, remove all instances of ‘key’ in-place and return the new length of the array.
+function remove_element(arr, key) {
+  let index = 0;
+  let uniqueValues = 0;
   while (index < arr.length) {
-    var currentNum = arr[index];
-    var prevNum = arr[index - 1];
-    if (currentNum !== prevNum) {
+    if (arr[index] !== key) {
       arr[uniqueValues] = arr[index];
       uniqueValues++;
     }
     index++;
   }
+  console.log(arr.slice(0, uniqueValues))
   return uniqueValues;
-};
-//linear time to iterate through the array
-console.log(remove_duplicates([2, 3, 3, 3, 6, 9, 9])) //output 4
-console.log(remove_duplicates([2, 2, 2, 11])) //output 2
+}
 
-// 12/18 pair with target sum
+console.log(remove_element([3, 2, 3, 6, 3, 10, 9, 3], 3)); //4
+console.log(remove_element([2, 11, 2, 2, 1], 2)); //2
+
+//12/17 remove duplicates
+// Given an array of sorted numbers, remove all duplicates from it. You should not use any extra space; after removing the duplicates in-place return the length of the subarray that has no duplicate in it.
+//can't remove duplicate from array you are iterating through.  
+// const remove_duplicates = function(arr) {
+//   var uniqueValues = 1;
+//   var index = 1;
+//   while (index < arr.length) {
+//     var currentNum = arr[index];
+//     var prevNum = arr[index - 1];
+//     if (currentNum !== prevNum) {
+//       arr[uniqueValues] = arr[index];
+//       uniqueValues++;
+//     }
+//     index++;
+//   }
+//   return uniqueValues;
+// };
+// //linear time to iterate through the array
+// console.log(remove_duplicates([2, 3, 3, 3, 6, 9, 9])) //output 4
+// console.log(remove_duplicates([2, 2, 2, 11])) //output 2
+
+// 12/17 pair with target sum
 // Given an array of sorted numbers and a target sum, find a pair in the array whose sum is equal to the given target.
 
 // // Write a function to return the indices of the two numbers (i.e. the pair) such that they add up to the given target.
@@ -61,7 +80,7 @@ console.log(remove_duplicates([2, 2, 2, 11])) //output 2
 // console.log(pair_with_targetsum([1, 2, 3, 4, 6], 6)) //output: [1, 3]
 // console.log(pair_with_targetsum([2, 5, 9, 11], 11)) //output: [0 , 2]
 
-//12/17 subsets with duplicates
+//12/16 subsets with duplicates
 // // Given a set of numbers that might contain duplicates, find all of its distinct subsets.
 // const find_subsets = (nums) => {
 //   let subsets = [];
@@ -233,61 +252,6 @@ console.log(remove_duplicates([2, 2, 2, 11])) //output 2
 // }
 // console.log(find_word_concatenation("catfoxcat", ["cat", "fox"]))
 //Output: [0, 3]
-
-//pair with target sum 10/28
-
-// const pair_with_targetsum = function(arr, target_sum) {
-//   let start = 0;
-//   let end = arr.length - 1;
-//   while (start < end) {
-//     const sum = arr[start] + arr[end];
-//      if (sum === target_sum) {
-//       return [start, end]
-//     }
-//     if (sum > target_sum) {
-//       end--;
-//     } else if (sum < target_sum) {
-//       start++;
-//     }
-//   }
-//   return [-1, -1];
-// }
-
-// console.log(pair_with_targetsum([2, 5, 9, 11], 11)) // should return [0, 2]
-
-//remove duplicates 10/29
-
-//keep a count of all the unique numbers
-//have variable to keep count of all unique numbers
-// count = 0
-// 2 => count = 1
-//3 => count = 2
-//3 => count = 2
-//6 => count = 3
-//9 => count = 4
-
-// const remove_duplicates = function(arr) {
-//   let nextNonduplicate = 1;
-//   let i = 1;
-//   while (i < arr.length) {
-//     if (arr[nextNonduplicate - 1] !== arr[i]) {
-//       arr[nextNonduplicate] = arr[i];
-//       nextNonduplicate++;
-//     }
-//     i++;
-//   }
-//   return nextNonduplicate;
-// }
-
-// console.log(remove_duplicates([2, 3, 3, 3, 6, 9, 9])) // output = 4
-
-//NND = 3, i = 5
-// arr[0] !== arr[1] => (2 !== 3)
-// arr[1]  arr[2]  => (3 === 3)
-// arr[1]. arr[3] => (3 === 3)
-// arr[1]. arr[4] => (3 !== 6)
-//arr[2] arr[4] => (3 !== 9) 
-// need to reassign value in the array so that when compared to the next value in array, it points to the last unique value.
 
 // make squares 10/30 
 //create array and fill with values equal to 0;
