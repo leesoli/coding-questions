@@ -1,45 +1,86 @@
+// 12/20 triplet sum close to target
+// Given an array of unsorted numbers and a target number, find a triplet in the array whose sum is as close to the target number as possible, return the sum of the triplet. If there are more than one such triplet, return the sum of the triplet with the smallest sum.
+
+const triplet_sum_close_to_target = function(arr, target) {
+  // TODO: Write your code here
+  var difference = Infinity;
+  var sum;
+
+  arr.sort((a,b) => a - b);
+  // console.log(arr)
+  
+  // //target_sum - sum gives the smallest difference, replace the difference and reassign sum
+  for (var i = 0; i < arr.length - 2; i++) {
+    var left = i + 1;
+    var right = arr.length - 1;
+    while (left < right) {
+      var currentSum = arr[i] + arr[left] + arr[right]
+      var target_diff = target - currentSum;
+      if (target_diff === 0) { return currentSum}
+
+      if (Math.abs(target_diff) < Math.abs(difference)) {
+        difference = target_diff;
+        sum = currentSum;
+      }
+
+      if (target_diff < 0) {
+        right--;
+      } else {
+        left++;
+      }
+    }
+  }
+ 
+  return sum;
+};
+
+
+console.log(triplet_sum_close_to_target([-2, 0, 1, 2], 2)) // output 1
+console.log(triplet_sum_close_to_target([-3, -1, 1, 2], 1)) // output 0
+
+
 // 12/17 search triplets
 // Given an array of unsorted numbers, find all unique triplets in it that add up to zero.
 
-function search_triplets(arr) {
-var triplets = [];
+// function search_triplets(arr) {
+// var triplets = [];
 
-arr.sort((a, b) => a - b)
-// console.log(arr)
-for (let i = 0; i < arr.length; i++) {
-  if (arr[i] === arr[i - 1]) { continue; }
-  search_pair(arr, -arr[i], i + 1, triplets);
-}
+// arr.sort((a, b) => a - b)
+// // console.log(arr)
+// for (let i = 0; i < arr.length; i++) {
+//   if (arr[i] === arr[i - 1]) { continue; }
+//   search_pair(arr, -arr[i], i + 1, triplets);
+// }
 
-return triplets;
-};
+// return triplets;
+// };
 
-function search_pair (arr, target_sum, left, triplets) {
-  let right = arr.length - 1;
-  while (left < right) {
-    let sum = arr[left] + arr[right];
-    if (sum === target_sum) {  
-      triplets.push([-target_sum, arr[left], arr[right]]);
-      left++;
-      right--;
-      while (left < right && arr[left] === arr[left - 1]) {
-        left++;
-      }
-      while (left < right && arr[right] === arr[right + 1]) {
-        right--;
-      }
-    } else if (sum > target_sum) {
-      right--;
-    } else {
-      left++;
-    }
-  }
-}
+// function search_pair (arr, target_sum, left, triplets) {
+//   let right = arr.length - 1;
+//   while (left < right) {
+//     let sum = arr[left] + arr[right];
+//     if (sum === target_sum) {  
+//       triplets.push([-target_sum, arr[left], arr[right]]);
+//       left++;
+//       right--;
+//       while (left < right && arr[left] === arr[left - 1]) {
+//         left++;
+//       }
+//       while (left < right && arr[right] === arr[right + 1]) {
+//         right--;
+//       }
+//     } else if (sum > target_sum) {
+//       right--;
+//     } else {
+//       left++;
+//     }
+//   }
+// }
 
 
 
 // console.log(search_triplets([-5, 2, -1, -2, 3])) // [[-5, 2, 3], [-2, -1, 3]]
-console.log(search_triplets([-3, 0, 1, 2, -1, 1, -2])) // [-3, 1, 2], [-2, 0, 2], [-2, 1, 1], [-1, 0, 1]
+// console.log(search_triplets([-3, 0, 1, 2, -1, 1, -2])) // [-3, 1, 2], [-2, 0, 2], [-2, 1, 1], [-1, 0, 1]
 
 //12/17 remove element
 // Given an unsorted array of numbers and a target ‘key’, remove all instances of ‘key’ in-place and return the new length of the array.
@@ -323,72 +364,6 @@ console.log(search_triplets([-3, 0, 1, 2, -1, 1, -2])) // [-3, 1, 2], [-2, 0, 2]
 
 // console.log(make_squares([-2, -1, 0, 2, 3]))
 //Expected output: [0, 1, 4, 4, 9]
-
-// 10/31 triplet sum to 0
-// Given an array of unsorted numbers, find all unique triplets in it that add up to zero.
-
-// const search_triplets = function(arr) {
-//   triplets = [];
-//   arr.sort((a,b) => { return a - b })
-//   console.log(arr)
-//   let left = 0;
-//   let right = arr.length - 1;
-//   while (left < right) {
-//     if (arr[left] > right) {
-//       right--
-//     }
-//   }
-
-//   return triplets;
-// };
-
-//three values that when added equal 0;
-//want to sort the numbers from least to greatest;
-//find one or two values that when added equals the negative sign of that sum
-//-3 = -(1 + 2)
-// -z = x + y
-
-// console.log(search_triplets([-3, 0, 1, 2, -1, 1, -2])) //[-3, 1, 2], [-2, 0, 2], [-2, 1, 1], [-1, 0, 1]
-
-//arr needs to be sorted in order
-//at each end whichever number is greater, look for numbers on the opposite end that when added equal that number.
-
-// const search_triplets = function(arr) {
-//   let triplets = [];
-//   arr.sort((a, b) => a - b);
-//   // console.log(arr);
-//   let left = 0;
-//   let right = arr.length - 1;
-//   while (left <= right) {
-//     //if left value is negative, look for values from the rightSquare
-//     if (arr[right] < 0 || arr[left] > 0) {
-//       break;
-//     };
-   
-//     if (Math.abs(arr[left]) > arr[right]) {
-//       for (i = right; i >= 0; i--) {
-//         const targetPair = Math.abs(arr[left]) - arr[i];
-//         if (arr.indexOf(targetPair) !== i && targetPair < arr[i]) {
-//           triplets.push([arr[left], targetPair, arr[i]]);
-//         }
-//       }
-//       left++;
-//     } else {
-//       for (j = left; j <= right; j++) {
-//         const targetPair = (-arr[right] + arr[j])
-//         console.log(targetPair)
-//         if (arr.indexOf(targetPair) !== j && arr[j] < targetPair) {
-//           triplets.push([arr[j], targetPair, arr[right]]);
-//         }
-//         console.log('done')
-//       }
-//       right--;
-//     }
-//   }
-
-//   return triplets;
-// };
-
 
 
 //10/2 search triplets review
