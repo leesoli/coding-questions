@@ -10,13 +10,31 @@
 //    [-1, 1, 4], [-1, 1, 3], [-1, 1, 2], [-1, 2, 3]
 
 const triplet_with_smaller_sum = function(arr, target) {
-  count = -1;
-  // TODO: Write your code here
-  
+  let count = 0;
+  arr.sort((a, b) => a - b);
+
+  //iterate through each element in the array
+  for (var i = 0; i < arr.length - 2; i++) {
+    var left = i + 1;
+    var right = arr.length - 1;
+    //calculate total sum including left and right pointers
+    //if sum is equal to or greater than target, reduce right pointers
+    //if sum is less than target, increase counter and increase left pointer
+    while (left < right) {
+      var sum = arr[i] + arr[left] + arr[right];
+      if (sum < target) {
+        count += right - left
+        left++;
+      } else {
+        right--;
+      }
+    }
+  }
   return count;
 };
 
-console.log(triplet_with_smaller_sum([-1, 0, 2, 3], 3))
+console.log(triplet_with_smaller_sum([-1, 0, 2, 3], 3)) //2
+console.log(triplet_with_smaller_sum([-1, 4, 2, 1, 3], 5)) //4
 
 // 12/20 triplet sum close to target
 // Given an array of unsorted numbers and a target number, find a triplet in the array whose sum is as close to the target number as possible, return the sum of the triplet. If there are more than one such triplet, return the sum of the triplet with the smallest sum.
