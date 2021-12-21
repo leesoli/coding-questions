@@ -1,21 +1,64 @@
-//12/17 remove element
-// Given an unsorted array of numbers and a target ‘key’, remove all instances of ‘key’ in-place and return the new length of the array.
-function remove_element(arr, key) {
-  let index = 0;
-  let uniqueValues = 0;
-  while (index < arr.length) {
-    if (arr[index] !== key) {
-      arr[uniqueValues] = arr[index];
-      uniqueValues++;
-    }
-    index++;
-  }
-  console.log(arr.slice(0, uniqueValues))
-  return uniqueValues;
+// 12/17 search triplets
+// Given an array of unsorted numbers, find all unique triplets in it that add up to zero.
+
+function search_triplets(arr) {
+var triplets = [];
+
+arr.sort((a, b) => a - b)
+// console.log(arr)
+for (let i = 0; i < arr.length; i++) {
+  if (arr[i] === arr[i - 1]) { continue; }
+  search_pair(arr, -arr[i], i + 1, triplets);
 }
 
-console.log(remove_element([3, 2, 3, 6, 3, 10, 9, 3], 3)); //4
-console.log(remove_element([2, 11, 2, 2, 1], 2)); //2
+return triplets;
+};
+
+function search_pair (arr, target_sum, left, triplets) {
+  let right = arr.length - 1;
+  while (left < right) {
+    let sum = arr[left] + arr[right];
+    if (sum === target_sum) {  
+      triplets.push([-target_sum, arr[left], arr[right]]);
+      left++;
+      right--;
+      while (left < right && arr[left] === arr[left - 1]) {
+        left++;
+      }
+      while (left < right && arr[right] === arr[right + 1]) {
+        right--;
+      }
+    } else if (sum > target_sum) {
+      right--;
+    } else {
+      left++;
+    }
+  }
+}
+
+
+
+// console.log(search_triplets([-5, 2, -1, -2, 3])) // [[-5, 2, 3], [-2, -1, 3]]
+console.log(search_triplets([-3, 0, 1, 2, -1, 1, -2])) // [-3, 1, 2], [-2, 0, 2], [-2, 1, 1], [-1, 0, 1]
+
+//12/17 remove element
+// Given an unsorted array of numbers and a target ‘key’, remove all instances of ‘key’ in-place and return the new length of the array.
+// function remove_element(arr, key) {
+//   let index = 0;
+//   let uniqueValues = 0;
+//   while (index < arr.length) {
+//     if (arr[index] !== key) {
+//       arr[uniqueValues] = arr[index];
+//       uniqueValues++;
+//     }
+//     index++;
+//   }
+//   console.log(arr.slice(0, uniqueValues))
+//   return uniqueValues;
+// }
+
+// console.log(remove_element([3, 2, 3, 6, 3, 10, 9, 3], 3)); //4
+// console.log(remove_element([2, 11, 2, 2, 1], 2)); //2
 
 //12/17 remove duplicates
 // Given an array of sorted numbers, remove all duplicates from it. You should not use any extra space; after removing the duplicates in-place return the length of the subarray that has no duplicate in it.
