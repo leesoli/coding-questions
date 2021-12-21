@@ -1,40 +1,43 @@
-//12/20 triplets with smaller sum
-// Given an array arr of unsorted numbers and a target sum, count all triplets in it such that arr[i] + arr[j] + arr[k] < target where i, j, and k are three different indices. Write a function to return the count of such triplets.
-// Input: [-1, 0, 2, 3], target=3 
-// Output: 2
-// Explanation: There are two triplets whose sum is less than the target: [-1, 0, 3], [-1, 0, 2]
+//12/20 subarrays with product less than a target
+// Given an array with positive numbers and a positive target number, find all of its contiguous subarrays whose product is less than the target number.
 
-// Input: [-1, 4, 2, 1, 3], target=5 
-// Output: 4
-// Explanation: There are four triplets whose sum is less than the target: 
-//    [-1, 1, 4], [-1, 1, 3], [-1, 1, 2], [-1, 2, 3]
-
-const triplet_with_smaller_sum = function(arr, target) {
-  let count = 0;
-  arr.sort((a, b) => a - b);
-
-  //iterate through each element in the array
-  for (var i = 0; i < arr.length - 2; i++) {
-    var left = i + 1;
-    var right = arr.length - 1;
-    //calculate total sum including left and right pointers
-    //if sum is equal to or greater than target, reduce right pointers
-    //if sum is less than target, increase counter and increase left pointer
-    while (left < right) {
-      var sum = arr[i] + arr[left] + arr[right];
-      if (sum < target) {
-        count += right - left
-        left++;
-      } else {
-        right--;
-      }
-    }
-  }
-  return count;
+const find_subarrays = function(arr, target) {
+  result = [];
+  
+  return result;
 };
 
-console.log(triplet_with_smaller_sum([-1, 0, 2, 3], 3)) //2
-console.log(triplet_with_smaller_sum([-1, 4, 2, 1, 3], 5)) //4
+console.log(find_subarrays([2, 5, 3, 10], 30)) //[2], [5], [2, 5], [3], [5, 3], [10] Explanation: There are six contiguous subarrays whose product is less than the target.
+
+//12/20 triplets with smaller sum
+// Given an array arr of unsorted numbers and a target sum, count all triplets in it such that arr[i] + arr[j] + arr[k] < target where i, j, and k are three different indices. Write a function to return the count of such triplets.
+
+// const triplet_with_smaller_sum = function(arr, target) {
+//   let count = 0;
+//   arr.sort((a, b) => a - b);
+
+//   //iterate through each element in the array
+//   for (var i = 0; i < arr.length - 2; i++) {
+//     var left = i + 1;
+//     var right = arr.length - 1;
+//     //calculate total sum including left and right pointers
+//     //if sum is equal to or greater than target, reduce right pointers
+//     //if sum is less than target, increase counter and increase left pointer
+//     while (left < right) {
+//       var sum = arr[i] + arr[left] + arr[right];
+//       if (sum < target) {
+//         count += right - left
+//         left++;
+//       } else {
+//         right--;
+//       }
+//     }
+//   }
+//   return count;
+// };
+
+// console.log(triplet_with_smaller_sum([-1, 0, 2, 3], 3)) //2
+// console.log(triplet_with_smaller_sum([-1, 4, 2, 1, 3], 5)) //4
 
 // 12/20 triplet sum close to target
 // Given an array of unsorted numbers and a target number, find a triplet in the array whose sum is as close to the target number as possible, return the sum of the triplet. If there are more than one such triplet, return the sum of the triplet with the smallest sum.
@@ -450,38 +453,6 @@ console.log(triplet_with_smaller_sum([-1, 4, 2, 1, 3], 5)) //4
 // console.log(search_triplets([-3, 0, 1, 2, -1, 1, -2])) //expected output [-3, 1, 2], [-2, 0, 2], [-2, 1, 1], [-1, 0, 1]
 // console.log(search_triplets([-5, 2, -1, -2, 3]));
 // //expected output => [[-5, 2, 3], [-2, -1, 3]]
-
-
-// function triplet_with_smaller_sum(arr, target) {
-//   arr.sort((a, b) => a - b);
-//   const triplets = [];
-//   for (i = 0; i < arr.length - 2; i++) {
-//     search_pair(arr, target - arr[i], i, triplets);
-//   }
-//   return triplets;
-// }
-
-
-// function search_pair(arr, target_sum, first, triplets) {
-//   let left = first + 1,
-//     right = arr.length - 1;
-//   while ((left < right)) {
-//     if (arr[left] + arr[right] < target_sum) { // found the triplet
-//       // since arr[right] >= arr[left], therefore, we can replace arr[right] by any number between
-//       // left and right to get a sum less than the target sum
-//       for (i = right; i > left; i--) {
-//         triplets.push([arr[first], arr[left], arr[i]]);
-//       }
-//       left += 1;
-//     } else {
-//       right -= 1; // we need a pair with a smaller sum
-//     }
-//   }
-// }
-
-
-// console.log(triplet_with_smaller_sum([-1, 0, 2, 3], 3)); // [ [ -1, 0, 3 ], [ -1, 0, 2 ] ]
-// console.log(triplet_with_smaller_sum([-1, 4, 2, 1, 3], 5)); // [ [ -1, 1, 4 ], [ -1, 1, 3 ], [ -1, 1, 2 ], [ -1, 2, 3 ] ]
 
 
 //linked list cycle
