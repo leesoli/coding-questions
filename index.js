@@ -1,34 +1,67 @@
+//12/21 Dutch National Flag problem
+// Given an array containing 0s, 1s and 2s, sort the array in-place. You should treat numbers of the array as objects, hence, we can’t count 0s, 1s, and 2s to recreate the array.
+
+const dutch_flag_sort = function(arr) {
+  // TODO: Write your code here
+  var left = 0;
+  var right = arr.length - 1;
+  //create index variable
+  var i = 0;
+
+  while (i <= right) {
+  //at the current index, if the value is equal to 0, 
+    if (arr[i] === 0) {
+      //switch out the value of low value with index value
+      [arr[i], arr[left]] = [arr[left], arr[i]];
+      //increment left and index
+      left++;
+      i++;
+    } else if (arr[i] === 1) {
+      i++;
+    } else {
+      [arr[i], arr[right]] = [arr[right], arr[i]]
+      right--;
+    }
+  }
+  return arr;
+};
+//exclude all the values that are 0 and 2 after moving them to the edges. if value is 1, keep moving through the array.
+
+console.log(dutch_flag_sort([1, 0, 2, 1, 0])) // [0, 0, 1, 1, 2]
+console.log(dutch_flag_sort([2, 2, 0, 1, 2, 0])) // [0, 0, 1, 2, 2, 2,]
+
+
 //12/20 subarrays with product less than a target
 // Given an array with positive numbers and a positive target number, find all of its contiguous subarrays whose product is less than the target number.
 
-const find_subarrays = function(arr, target) {
-let result = [];
-//keep track of product
-var product = 1;
-var left = 0;
+// const find_subarrays = function(arr, target) {
+// let result = [];
+// //keep track of product
+// var product = 1;
+// var left = 0;
 
-//iterate through each value in array
-for (var right = 0; right < arr.length; right++) {
-  product *= arr[right];
+// //iterate through each value in array
+// for (var right = 0; right < arr.length; right++) {
+//   product *= arr[right];
   
-  //when my product is greater than my target, decrease the size of the window
-  while (product >= target && left < arr.length) {
-    product /= arr[left];
-    left++;
-  }
+//   //when my product is greater than my target, decrease the size of the window
+//   while (product >= target && left < arr.length) {
+//     product /= arr[left];
+//     left++;
+//   }
 
-  //to avoid duplicates, start subarray with arr[right], then extend moving left.
-    var subarray = [];
-    for (var i = right; i > left - 1; i--) {
-      subarray.unshift(arr[i]);
-      result.push([...subarray])
-    }
-}
+//   //to avoid duplicates, start subarray with arr[right], then extend moving left.
+//     var subarray = [];
+//     for (var i = right; i > left - 1; i--) {
+//       subarray.unshift(arr[i]);
+//       result.push([...subarray])
+//     }
+// }
 
-  return result;
-};
+//   return result;
+// };
 
-console.log(find_subarrays([2, 5, 3, 10], 30)) //[2], [5], [2, 5], [3], [5, 3], [10] Explanation: There are six contiguous subarrays whose product is less than the target.
+// console.log(find_subarrays([2, 5, 3, 10], 30)) //[2], [5], [2, 5], [3], [5, 3], [10] Explanation: There are six contiguous subarrays whose product is less than the target.
 
 //12/20 triplets with smaller sum
 // Given an array arr of unsorted numbers and a target sum, count all triplets in it such that arr[i] + arr[j] + arr[k] < target where i, j, and k are three different indices. Write a function to return the count of such triplets.
