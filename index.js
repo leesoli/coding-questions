@@ -2,8 +2,29 @@
 // Given an array with positive numbers and a positive target number, find all of its contiguous subarrays whose product is less than the target number.
 
 const find_subarrays = function(arr, target) {
-  result = [];
+let result = [];
+//keep track of product
+var product = 1;
+var left = 0;
+
+//iterate through each value in array
+for (var right = 0; right < arr.length; right++) {
+  product *= arr[right];
   
+  //when my product is greater than my target, decrease the size of the window
+  while (product >= target && left < arr.length) {
+    product /= arr[left];
+    left++;
+  }
+
+  //to avoid duplicates, start subarray with arr[right], then extend moving left.
+    var subarray = [];
+    for (var i = right; i > left - 1; i--) {
+      subarray.unshift(arr[i]);
+      result.push([...subarray])
+    }
+}
+
   return result;
 };
 
