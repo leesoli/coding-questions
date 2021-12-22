@@ -1,37 +1,100 @@
-//12/21 Dutch National Flag problem
-// Given an array containing 0s, 1s and 2s, sort the array in-place. You should treat numbers of the array as objects, hence, we can’t count 0s, 1s, and 2s to recreate the array.
+//12/22 Challenge question 1 (quadruple sum to target)
+// Given an array of unsorted numbers and a target number, find all unique quadruplets in it, whose sum is equal to the target number.
+const search_quadruplets = function(arr, target) {
+  quadruplets = [];
+  
+  //sort array
+  arr.sort((a, b) => a - b)
+  //i must allow 3 values to come after it
+  for (let i = 0; i < arr.length - 3; i++) {
+    //avoid having duplicate values 
+    if (i > 0 && arr[i] === arr[i - 1]) { continue; }
 
-const dutch_flag_sort = function(arr) {
-  // TODO: Write your code here
-  var left = 0;
-  var right = arr.length - 1;
-  //create index variable
-  var i = 0;
+    //j must always be greater than i and allow 2 values to come after it
+    for (let j = i + 1; j < arr.length - 2; j++) {
+      if (j > (i + 1) && arr[j] === arr[j - 1]) { continue; }
+      //call helper function to find remaining pairs
+      search_pairs(arr, i, j, target, quadruplets);
+    }
+  }
+  return quadruplets;
+};
 
-  while (i <= right) {
-  //at the current index, if the value is equal to 0, 
-    if (arr[i] === 0) {
-      //switch out the value of low value with index value
-      [arr[i], arr[left]] = [arr[left], arr[i]];
-      //increment left and index
+const search_pairs = (arr, first, second, target, quadruplets) => {
+  let left = second + 1;
+  let right = arr.length - 1;
+  while (left < right) {
+    currentSum = arr[first] + arr[second] + arr[left] + arr[right];
+
+    //if sum is found push values to result array. reduce window size
+    if (currentSum === target) {
+      quadruplets.push([arr[first], arr[second], arr[left], arr[right]]);
+      // console.log(quadruplets)
       left++;
-      i++;
-    } else if (arr[i] === 1) {
-      i++;
+      right--;
+
+      //avoid duplicate quadruplets
+      while (arr[left] === arr[left - 1]) {
+        left++;
+      }
+      while (arr[right] === arr[right + 1]) {
+        right--;
+      }
+    } else if (currentSum < target) {
+      left++;
     } else {
-      [arr[i], arr[right]] = [arr[right], arr[i]]
       right--;
     }
   }
-  return arr;
-};
-//exclude all the values that are 0 and 2 after moving them to the edges. if value is 1, keep moving through the array.
+}
 
-console.log(dutch_flag_sort([1, 0, 2, 1, 0])) // [0, 0, 1, 1, 2]
-console.log(dutch_flag_sort([2, 2, 0, 1, 2, 0])) // [0, 0, 1, 2, 2, 2,]
+//[-2, -1, 0, 1, 2, 2]
+//-2, -1, 0, 2  sum = -1. i = 0, j = 1
+//-2, -1, 1, 2 sum = 0. 
+//-2, -1, 2, 2 sum = 1
+//-2, 0, 1, 2 sum = 1   i = 0, j = 2
+//-2, 0, 2, 2 sum = 2                 quadruplets [-2, 0, 2, 2]  
+//-2, 1, 2, 2 sum = 3   i = 0, j = 3 
+//-1, 0, 1, 2 sum = 2  i = 1, j = 2   quadruplets [-2, 0, 2, 2], [-1, 0, 1, 2]
+//0, 1, 2, 2 sum = 5.  i = 2, j = 3 
+
+console.log(search_quadruplets([2, 0, -1, 1, -2, 2], 2)) //[-2, 0, 2, 2], [-1, 0, 1, 2]
 
 
-//12/20 subarrays with product less than a target
+//12/21 Dutch National Flag problem
+// Given an array containing 0s, 1s and 2s, sort the array in-place. You should treat numbers of the array as objects, hence, we can’t count 0s, 1s, and 2s to recreate the array.
+
+// const dutch_flag_sort = function(arr) {
+//   // TODO: Write your code here
+//   var left = 0;
+//   var right = arr.length - 1;
+//   //create index variable
+//   var i = 0;
+
+//   while (i <= right) {
+//   //at the current index, if the value is equal to 0, 
+//     if (arr[i] === 0) {
+//       //switch out the value of low value with index value
+//       [arr[i], arr[left]] = [arr[left], arr[i]];
+//       //increment left and index
+//       left++;
+//       i++;
+//     } else if (arr[i] === 1) {
+//       i++;
+//     } else {
+//       [arr[i], arr[right]] = [arr[right], arr[i]]
+//       right--;
+//     }
+//   }
+//   return arr;
+// };
+// //exclude all the values that are 0 and 2 after moving them to the edges. if value is 1, keep moving through the array.
+
+// console.log(dutch_flag_sort([1, 0, 2, 1, 0])) // [0, 0, 1, 1, 2]
+// console.log(dutch_flag_sort([2, 2, 0, 1, 2, 0])) // [0, 0, 1, 2, 2, 2,]
+
+
+//12/20 & 12/21 subarrays with product less than a target
 // Given an array with positive numbers and a positive target number, find all of its contiguous subarrays whose product is less than the target number.
 
 // const find_subarrays = function(arr, target) {
