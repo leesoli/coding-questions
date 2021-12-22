@@ -47,6 +47,12 @@ const search_pairs = (arr, first, second, target, quadruplets) => {
     }
   }
 }
+//Time Complexity
+//sorting the array (O(N * logN))
+//nest loop (O(n) * O(n)) = O n^ 2
+//loop through each variable (n)
+//overall takes O ( * logN + N^3) == O (N^3)
+//Space Complexity O (N) which is required for sorting.
 
 //[-2, -1, 0, 1, 2, 2]
 //-2, -1, 0, 2  sum = -1. i = 0, j = 1
