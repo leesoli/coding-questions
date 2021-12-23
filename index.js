@@ -1,50 +1,55 @@
 //12/22 Challenge problem 2 (Comparing strings containing backspaces)
 // Given two strings containing backspaces (identified by the character ‘#’), check if the two strings are equal.
 const backspace_compare = function(str1, str2) {
-
   //input string
   //output true or false value based on whether the strings are equal
   //edge case = string lengths can be different, consider when hash is entered more than once.
-  
-  var first = str1.split('');
-  var second = str2.split('');
 
-  //iterate through str1 and str 2
-  //anytime i find a hash, delete the character at current index and one before it.
-  
-  for (let i = 0; i < str1.length; i++) {
-    if (str1[i] === '#') {
-      first.splice(i - 1, 2).join('');
-      console.log(first)
+var first = str1.split('');
+var second = str2.split('');
+
+//iterate backwards
+i = str1.length - 1;
+j = str2.length - 1;
+
+while (i >= 0) {
+  //while there is more than one hash, keep a counter of the hashes and remove that many elements in front of the current index.
+  if (str1[i] === '#' && str1[i - 1] === '#') {
+    let hashCount = 0;
+    while (str1[i] === '#') {
+      hashCount++;
+      i--;
     }
+    first.splice(i - hashCount + 1, hashCount * 2);
   }
+  if (str1[i] === '#') {
+    first.splice(i - 1, 2);
+  }
+  i--;
+}
 
-  for (let j = 0; j < str2.length; j++) {
-    if (str2[j] === '#') {
-      second.splice(j - 1, 2).join('');
+while (j >= 0) {
+  if (str2[j] === '#' && str2[j - 1] === '#') {
+    let hashCount = 0;
+    while (str2[j] === '#') {
+      hashCount++;
+      j--;
     }
+    second.splice(j - hashCount + 1, hashCount * 2);
   }
-
-  //iterate through both strings.
-  var index = 0;
-
-  //if length of string doesnt match or string characters dont match at index return false
-  if (first.length !== second.length) {
-    return false;
+  if (str2[j] === '#') {
+    second.splice(j - 1, 2);
   }
+  j--;
+}
 
-  while (index < first.length) {
-    if (first[index] !== second[index]) {
-      return false;
-    }
-  index++;
-  }
-  return true;
+return (first.join('') === second.join(''));
+}
 
-};
-
-console.log(backspace_compare('xy#z', 'xzz#')) //true;
-console.log(backspace_compare('xy#z', 'xyz#')) //false;
+// console.log(backspace_compare('xp#', 'xyz##')) //true
+// console.log(backspace_compare('xywrrmp', 'xywrrmu#p')) // true
+// console.log(backspace_compare('xy#z', 'xzz#')) //true;
+// console.log(backspace_compare('xy#z', 'xyz#')) //false;
 
 
 //12/22 Challenge question 1 (quadruple sum to target)
