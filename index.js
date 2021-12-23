@@ -1,52 +1,101 @@
-//12/22 Challenge question 1 (quadruple sum to target)
-// Given an array of unsorted numbers and a target number, find all unique quadruplets in it, whose sum is equal to the target number.
-const search_quadruplets = function(arr, target) {
-  quadruplets = [];
-  
-  //sort array
-  arr.sort((a, b) => a - b)
-  //i must allow 3 values to come after it
-  for (let i = 0; i < arr.length - 3; i++) {
-    //avoid having duplicate values 
-    if (i > 0 && arr[i] === arr[i - 1]) { continue; }
+//12/22 Challenge problem 2 (Comparing strings containing backspaces)
+// Given two strings containing backspaces (identified by the character ‘#’), check if the two strings are equal.
+const backspace_compare = function(str1, str2) {
 
-    //j must always be greater than i and allow 2 values to come after it
-    for (let j = i + 1; j < arr.length - 2; j++) {
-      if (j > (i + 1) && arr[j] === arr[j - 1]) { continue; }
-      //call helper function to find remaining pairs
-      search_pairs(arr, i, j, target, quadruplets);
+  //input string
+  //output true or false value based on whether the strings are equal
+  //edge case = string lengths can be different, consider when hash is entered more than once.
+  
+  var first = str1.split('');
+  var second = str2.split('');
+
+  //iterate through str1 and str 2
+  //anytime i find a hash, delete the character at current index and one before it.
+  
+  for (let i = 0; i < str1.length; i++) {
+    if (str1[i] === '#') {
+      first.splice(i - 1, 2).join('');
+      console.log(first)
     }
   }
-  return quadruplets;
+
+  for (let j = 0; j < str2.length; j++) {
+    if (str2[j] === '#') {
+      second.splice(j - 1, 2).join('');
+    }
+  }
+
+  //iterate through both strings.
+  var index = 0;
+
+  //if length of string doesnt match or string characters dont match at index return false
+  if (first.length !== second.length) {
+    return false;
+  }
+
+  while (index < first.length) {
+    if (first[index] !== second[index]) {
+      return false;
+    }
+  index++;
+  }
+  return true;
+
 };
 
-const search_pairs = (arr, first, second, target, quadruplets) => {
-  let left = second + 1;
-  let right = arr.length - 1;
-  while (left < right) {
-    currentSum = arr[first] + arr[second] + arr[left] + arr[right];
+console.log(backspace_compare('xy#z', 'xzz#')) //true;
+console.log(backspace_compare('xy#z', 'xyz#')) //false;
 
-    //if sum is found push values to result array. reduce window size
-    if (currentSum === target) {
-      quadruplets.push([arr[first], arr[second], arr[left], arr[right]]);
-      // console.log(quadruplets)
-      left++;
-      right--;
 
-      //avoid duplicate quadruplets
-      while (arr[left] === arr[left - 1]) {
-        left++;
-      }
-      while (arr[right] === arr[right + 1]) {
-        right--;
-      }
-    } else if (currentSum < target) {
-      left++;
-    } else {
-      right--;
-    }
-  }
-}
+//12/22 Challenge question 1 (quadruple sum to target)
+// Given an array of unsorted numbers and a target number, find all unique quadruplets in it, whose sum is equal to the target number.
+// const search_quadruplets = function(arr, target) {
+//   quadruplets = [];
+  
+//   //sort array
+//   arr.sort((a, b) => a - b)
+//   //i must allow 3 values to come after it
+//   for (let i = 0; i < arr.length - 3; i++) {
+//     //avoid having duplicate values 
+//     if (i > 0 && arr[i] === arr[i - 1]) { continue; }
+
+//     //j must always be greater than i and allow 2 values to come after it
+//     for (let j = i + 1; j < arr.length - 2; j++) {
+//       if (j > (i + 1) && arr[j] === arr[j - 1]) { continue; }
+//       //call helper function to find remaining pairs
+//       search_pairs(arr, i, j, target, quadruplets);
+//     }
+//   }
+//   return quadruplets;
+// };
+
+// const search_pairs = (arr, first, second, target, quadruplets) => {
+//   let left = second + 1;
+//   let right = arr.length - 1;
+//   while (left < right) {
+//     currentSum = arr[first] + arr[second] + arr[left] + arr[right];
+
+//     //if sum is found push values to result array. reduce window size
+//     if (currentSum === target) {
+//       quadruplets.push([arr[first], arr[second], arr[left], arr[right]]);
+//       // console.log(quadruplets)
+//       left++;
+//       right--;
+
+//       //avoid duplicate quadruplets
+//       while (arr[left] === arr[left - 1]) {
+//         left++;
+//       }
+//       while (arr[right] === arr[right + 1]) {
+//         right--;
+//       }
+//     } else if (currentSum < target) {
+//       left++;
+//     } else {
+//       right--;
+//     }
+//   }
+// }
 //Time Complexity
 //sorting the array (O(N * logN))
 //nest loop (O(n) * O(n)) = O n^ 2
@@ -64,7 +113,7 @@ const search_pairs = (arr, first, second, target, quadruplets) => {
 //-1, 0, 1, 2 sum = 2  i = 1, j = 2   quadruplets [-2, 0, 2, 2], [-1, 0, 1, 2]
 //0, 1, 2, 2 sum = 5.  i = 2, j = 3 
 
-console.log(search_quadruplets([2, 0, -1, 1, -2, 2], 2)) //[-2, 0, 2, 2], [-1, 0, 1, 2]
+// console.log(search_quadruplets([2, 0, -1, 1, -2, 2], 2)) //[-2, 0, 2, 2], [-1, 0, 1, 2]
 
 
 //12/21 Dutch National Flag problem
