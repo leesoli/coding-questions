@@ -1,50 +1,105 @@
-//12/22 Challenge problem 2 (Comparing strings containing backspaces)
+//12/23 Challenge problem 3 (minimum window sort)
+// Given an array, find the length of the smallest subarray in it which when sorted will sort the whole array.
+
+//first attempt: second example didnt work because 0 is present in the middle of the array. my solution was looking for the element whose element to the right of it is less than the current element.
+//need to somehow keep track of the lowest and highest number.
+
+const shortest_window_sort = function(arr) {
+  //keep track of lowest number
+  var low = Infinity;
+  var high = -Infinity;
+  //iterate through array looking for the next lowest value;
+  var element = 0;
+  //if you find number in the array that is lower than the number to its right
+  while (element < arr.length) {
+    if (arr[element] < arr[element - 1]) {
+      let i = element - 1;
+      while (arr[element] < arr[i]) {
+        i--;
+      }
+      if (i < low) {
+        //save the lowest number of elements that needs to be sorted
+        low = i;
+      }
+    }
+    element++;
+  }
+  
+  var last = arr.length - 1;
+
+  while (last > low) {
+    //find number in the array that is less than number to its left
+    if (arr[last] < arr[last - 1]) {
+      if (last > high) {
+        high = last;
+      }
+    }
+    last--;
+  }
+
+  if (low === Infinity && high === -Infinity) {
+    return 0;
+  } else if (low === Infinity) {
+    return high - 0;
+  } else if (high === -Infinity) {
+    return arr.length - low;
+  }
+  return high - low;  
+};
+console.log(shortest_window_sort([1, 2, 5, 3, 7, 10, 9, 12])) //5
+console.log(shortest_window_sort([1, 3, 2, 0, -1, 7, 10])) //5
+
+//12/22 & 12/23 Challenge problem 2 (Comparing strings containing backspaces)
 // Given two strings containing backspaces (identified by the character ‘#’), check if the two strings are equal.
-const backspace_compare = function(str1, str2) {
-  //input string
-  //output true or false value based on whether the strings are equal
-  //edge case = string lengths can be different, consider when hash is entered more than once.
+// const backspace_compare = function(str1, str2) {
+//   //input string
+//   //output true or false value based on whether the strings are equal
+//   //edge case = string lengths can be different, consider when hash is entered more than once.
 
-var first = str1.split('');
-var second = str2.split('');
+// var first = str1.split('');
+// var second = str2.split('');
 
-//iterate backwards
-i = str1.length - 1;
-j = str2.length - 1;
+// //iterate backwards
+// i = str1.length - 1;
+// j = str2.length - 1;
 
-while (i >= 0) {
-  //while there is more than one hash, keep a counter of the hashes and remove that many elements in front of the current index.
-  if (str1[i] === '#' && str1[i - 1] === '#') {
-    let hashCount = 0;
-    while (str1[i] === '#') {
-      hashCount++;
-      i--;
-    }
-    first.splice(i - hashCount + 1, hashCount * 2);
-  }
-  if (str1[i] === '#') {
-    first.splice(i - 1, 2);
-  }
-  i--;
-}
+// while (i >= 0) {
+//   //while there is more than one hash, keep a counter of the hashes and remove that many elements in front of the current index.
+//   if (str1[i] === '#' && str1[i - 1] === '#') {
+//     let hashCount = 0;
+//     while (str1[i] === '#') {
+//       hashCount++;
+//       i--;
+//     }
+//     first.splice(i - hashCount + 1, hashCount * 2);
+//   }
+//   if (str1[i] === '#') {
+//     first.splice(i - 1, 2);
+//   }
+//   i--;
+// }
 
-while (j >= 0) {
-  if (str2[j] === '#' && str2[j - 1] === '#') {
-    let hashCount = 0;
-    while (str2[j] === '#') {
-      hashCount++;
-      j--;
-    }
-    second.splice(j - hashCount + 1, hashCount * 2);
-  }
-  if (str2[j] === '#') {
-    second.splice(j - 1, 2);
-  }
-  j--;
-}
+// while (j >= 0) {
+//   if (str2[j] === '#' && str2[j - 1] === '#') {
+//     let hashCount = 0;
+//     while (str2[j] === '#') {
+//       hashCount++;
+//       j--;
+//     }
+//     second.splice(j - hashCount + 1, hashCount * 2);
+//   }
+//   if (str2[j] === '#') {
+//     second.splice(j - 1, 2);
+//   }
+//   j--;
+// }
 
-return (first.join('') === second.join(''));
-}
+// return (first.join('') === second.join(''));
+// }
+
+
+//time complexity have two while loops that decrements until the string length equals 0 so the length of the string determines the amount of times the loop will iterate. O(n), we also have two strings that need to be iterated so O(n) + O(n) 
+//also the code is repetitive so i can go ahead and refactor (reusing repeated elemetns in helper function)
 
 // console.log(backspace_compare('xp#', 'xyz##')) //true
 // console.log(backspace_compare('xywrrmp', 'xywrrmu#p')) // true
