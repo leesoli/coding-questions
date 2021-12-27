@@ -1,52 +1,41 @@
 //12/23 Challenge problem 3 (minimum window sort)
 // Given an array, find the length of the smallest subarray in it which when sorted will sort the whole array.
 
-//first attempt: second example didnt work because 0 is present in the middle of the array. my solution was looking for the element whose element to the right of it is less than the current element.
-//need to somehow keep track of the lowest and highest number.
+//iterate through the array to search for the first elements that are out of order
+//search within that subarray to find the minimum and maximum values
+//extend the subarray if you find a value that is greater than the minimum value.
+//vice versa for maximum value;
+//consider case where there all values are sorted
 
 const shortest_window_sort = function(arr) {
-  //keep track of lowest number
-  var low = Infinity;
-  var high = -Infinity;
-  //iterate through array looking for the next lowest value;
-  var element = 0;
-  //if you find number in the array that is lower than the number to its right
-  while (element < arr.length) {
-    if (arr[element] < arr[element - 1]) {
-      let i = element - 1;
-      while (arr[element] < arr[i]) {
-        i--;
-      }
-      if (i < low) {
-        //save the lowest number of elements that needs to be sorted
-        low = i;
-      }
-    }
-    element++;
-  }
+  var low = 0;
+  var high = arr.length - 1;
   
-  var last = arr.length - 1;
+  while (low < arr.length - 1 && arr[low] <= arr[low + 1]) { low++; }
 
-  while (last > low) {
-    //find number in the array that is less than number to its left
-    if (arr[last] < arr[last - 1]) {
-      if (last > high) {
-        high = last;
-      }
-    }
-    last--;
+  //array is all sorted
+  if (low === arr.length - 1) { return 0;}
+
+  while (high > 0 && arr[high] > arr[high - 1]) { high--; }
+
+  //find the min and max of the subarray.
+  let subarrayMax = -Infinity;
+  let subarrayMin = Infinity;
+  for (let i = low; i <= high; i++) {
+    subarrayMax = Math.max(subarrayMax, arr[i]);
+    subarrayMin = Math.min(subarrayMin, arr[i]);
+  }
+  //extend the subarray to include any number that is bigger than the minimum of the subarray
+  while (low > 0 && arr[low - 1] > subarrayMin) {
+    low--;
+  }
+  while (high < arr.length - 1 && arr[high + 1] < subarrayMax) {
+    high++;
   }
 
-  if (low === Infinity && high === -Infinity) {
-    return 0;
-  } else if (low === Infinity) {
-    return high - 0;
-  } else if (high === -Infinity) {
-    return arr.length - low;
-  }
-  return high - low;  
+  return high - low + 1;
 };
-console.log(shortest_window_sort([1, 2, 5, 3, 7, 10, 9, 12])) //5
+console.log(shortest_window_sort([1, 2, 5, 3, 7, 12, 10, 11])) //6
 console.log(shortest_window_sort([1, 3, 2, 0, -1, 7, 10])) //5
 
 //12/22 & 12/23 Challenge problem 2 (Comparing strings containing backspaces)
