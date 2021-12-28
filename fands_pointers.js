@@ -1,4 +1,7 @@
-//12/28 middle of the linked list
+//12/28 palindrome linkedlist problem challenge 1
+// Given the head of a Singly LinkedList, write a method to check if the LinkedList is a palindrome or not.
+
+// Your algorithm should use constant space and the input LinkedList should be in the original form once the algorithm is finished. The algorithm should have O(N)O(N) time complexity where ‘N’ is the number of nodes in the LinkedList.
 class Node {
   constructor(value, next=null){
     this.value = value;
@@ -6,25 +9,62 @@ class Node {
   }
 }
 
-const find_middle_of_linked_list = function(head) {
+
+const is_palindromic_linked_list= function(head) {
   
-  return head;
-}
+  return false;
+};
 
 
-head = new Node(1)
-head.next = new Node(2)
-head.next.next = new Node(3)
+head = new Node(2)
+head.next = new Node(4)
+head.next.next = new Node(6)
 head.next.next.next = new Node(4)
-head.next.next.next.next = new Node(5)
+head.next.next.next.next = new Node(2)
 
-console.log(`Middle Node: ${find_middle_of_linked_list(head).value}`)
+console.log(`Is palindrome: ${is_palindromic_linked_list(head)}`)
 
-head.next.next.next.next.next = new Node(6)
-console.log(`Middle Node: ${find_middle_of_linked_list(head).value}`)
+head.next.next.next.next.next = new Node(2)
+console.log(`Is palindrome: ${is_palindromic_linked_list(head)}`)
 
-head.next.next.next.next.next.next = new Node(7)
-console.log(`Middle Node: ${find_middle_of_linked_list(head).value}`)
+
+//12/28 middle of the linked list
+// Given the head of a Singly LinkedList, write a method to return the middle node of the LinkedList. If the total number of nodes in the LinkedList is even, return the second middle node.
+
+// class Node {
+//   constructor(value, next=null){
+//     this.value = value;
+//     this.next = next;
+//   }
+// }
+
+// const find_middle_of_linked_list = function(head) {
+//   var slow = head;
+//   var fast = head;
+
+//   while (fast !== null && fast.next !== null) {
+//     //if next value of fast become null then return its half
+//     slow = slow.next;
+//     fast = fast.next.next;
+//   }
+
+//   return slow;
+// }
+
+
+// head = new Node(1)
+// head.next = new Node(2)
+// head.next.next = new Node(3)
+// head.next.next.next = new Node(4)
+// head.next.next.next.next = new Node(5)
+
+// console.log(`Middle Node: ${find_middle_of_linked_list(head).value}`)
+
+// head.next.next.next.next.next = new Node(6)
+// console.log(`Middle Node: ${find_middle_of_linked_list(head).value}`)
+
+// head.next.next.next.next.next.next = new Node(7)
+// console.log(`Middle Node: ${find_middle_of_linked_list(head).value}`)
 
 //12/28 Happy Number 
 // Any number will be called a happy number if, after repeatedly replacing it with a number equal to the sum of the square of all of its digits, leads us to number ‘1’. All other (not-happy) numbers will never reach ‘1’. Instead, they will be stuck in a cycle of numbers which does not include ‘1’.
