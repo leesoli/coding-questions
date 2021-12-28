@@ -1,4 +1,80 @@
-//12/23 Challenge problem 3 (minimum window sort)
+//12/28. start of linkedlist cycle
+class Node {
+  constructor(value, next=null){
+    this.value = value;
+    this.next = next;
+  }
+}
+
+const find_cycle_start = function(head){
+  //create fast and slow pointer
+  let fast = head;
+  let slow = head;
+  //increment the pointers until they meet
+  while (fast !== null && fast.next !== null) {
+    fast = fast.next.next;
+    slow = slow.next
+
+    if (fast === slow) {
+      //then call find length function
+      length = find_length(fast);
+      break;
+    }
+  }
+  
+  return find_start(length, head);
+};
+
+const find_length = function (fast) {
+  //keep moving one of the pointers until they match each other
+  let pointer = fast;
+  let cycle_length = 0;
+  while (true) {
+    pointer = pointer.next;
+    cycle_length++;
+    if (pointer === fast) {
+      break;
+    }
+  }
+  return cycle_length;
+}
+
+const find_start = function (length, head) {
+  var pointer1 = head;
+  var pointer2 = head;
+  while (length > 0) {
+    pointer2 = pointer2.next;
+    length--;
+  }
+
+  while (pointer1 !== pointer2) {
+    pointer1 = pointer1.next;
+    pointer2 = pointer2.next;
+  }
+
+  return pointer1;
+}
+
+
+
+head = new Node(1)
+head.next = new Node(2)
+head.next.next = new Node(3)
+head.next.next.next = new Node(4)
+head.next.next.next.next = new Node(5)
+head.next.next.next.next.next = new Node(6)
+
+head.next.next.next.next.next.next = head.next.next
+console.log(`LinkedList cycle start: ${find_cycle_start(head).value}`)
+
+head.next.next.next.next.next.next = head.next.next.next
+console.log(`LinkedList cycle start: ${find_cycle_start(head).value}`)
+
+head.next.next.next.next.next.next = head
+console.log(`LinkedList cycle start: ${find_cycle_start(head).value}`)
+
+
+//12/23  && 12/27 Challenge problem 3 (minimum window sort)
 // Given an array, find the length of the smallest subarray in it which when sorted will sort the whole array.
 
 //iterate through the array to search for the first elements that are out of order
@@ -7,36 +83,36 @@
 //vice versa for maximum value;
 //consider case where there all values are sorted
 
-const shortest_window_sort = function(arr) {
-  var low = 0;
-  var high = arr.length - 1;
+// const shortest_window_sort = function(arr) {
+//   var low = 0;
+//   var high = arr.length - 1;
   
-  while (low < arr.length - 1 && arr[low] <= arr[low + 1]) { low++; }
+//   while (low < arr.length - 1 && arr[low] <= arr[low + 1]) { low++; }
 
-  //array is all sorted
-  if (low === arr.length - 1) { return 0;}
+//   //array is all sorted
+//   if (low === arr.length - 1) { return 0;}
 
-  while (high > 0 && arr[high] > arr[high - 1]) { high--; }
+//   while (high > 0 && arr[high] > arr[high - 1]) { high--; }
 
-  //find the min and max of the subarray.
-  let subarrayMax = -Infinity;
-  let subarrayMin = Infinity;
-  for (let i = low; i <= high; i++) {
-    subarrayMax = Math.max(subarrayMax, arr[i]);
-    subarrayMin = Math.min(subarrayMin, arr[i]);
-  }
-  //extend the subarray to include any number that is bigger than the minimum of the subarray
-  while (low > 0 && arr[low - 1] > subarrayMin) {
-    low--;
-  }
-  while (high < arr.length - 1 && arr[high + 1] < subarrayMax) {
-    high++;
-  }
+//   //find the min and max of the subarray.
+//   let subarrayMax = -Infinity;
+//   let subarrayMin = Infinity;
+//   for (let i = low; i <= high; i++) {
+//     subarrayMax = Math.max(subarrayMax, arr[i]);
+//     subarrayMin = Math.min(subarrayMin, arr[i]);
+//   }
+//   //extend the subarray to include any number that is bigger than the minimum of the subarray
+//   while (low > 0 && arr[low - 1] > subarrayMin) {
+//     low--;
+//   }
+//   while (high < arr.length - 1 && arr[high + 1] < subarrayMax) {
+//     high++;
+//   }
 
-  return high - low + 1;
-};
-console.log(shortest_window_sort([1, 2, 5, 3, 7, 12, 10, 11])) //6
-console.log(shortest_window_sort([1, 3, 2, 0, -1, 7, 10])) //5
+//   return high - low + 1;
+// };
+// console.log(shortest_window_sort([1, 2, 5, 3, 7, 12, 10, 11])) //6
+// console.log(shortest_window_sort([1, 3, 2, 0, -1, 7, 10])) //5
 
 //12/22 & 12/23 Challenge problem 2 (Comparing strings containing backspaces)
 // Given two strings containing backspaces (identified by the character ‘#’), check if the two strings are equal.
