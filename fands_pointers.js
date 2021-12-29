@@ -1,4 +1,5 @@
 //12/28 palindrome linkedlist problem challenge 1
+
 // Given the head of a Singly LinkedList, write a method to check if the LinkedList is a palindrome or not.
 
 // Your algorithm should use constant space and the input LinkedList should be in the original form once the algorithm is finished. The algorithm should have O(N)O(N) time complexity where ‘N’ is the number of nodes in the LinkedList.
@@ -9,10 +10,40 @@ class Node {
   }
 }
 
-
 const is_palindromic_linked_list= function(head) {
+  //consider if size of word is one letter or smaller;
+  if (head === null) { return false; }
+  if (head.next === null) { return true; }
   
-  return false;
+  var slow = head;
+  var fast = head;
+  //find the middle length of the cycle.
+  while (fast !== null && fast.next !== null) {
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+
+  //then for each value starting from the middle half, save the previous values;
+  while (slow.next !== null) {
+    var last = slow;
+    slow = slow.next
+    slow.previous = last;
+  }
+
+  //compare from the last value to the middle half with the first value to middle half
+  var firstHalf = head;
+  while (true) {
+    slow = slow.previous;
+    firstHalf = firstHalf.next;
+
+    if (slow.value !== firstHalf.value) {
+      return false;
+    }
+    if (slow === firstHalf) {
+      break;
+    }
+  }
+  return true;
 };
 
 
@@ -22,17 +53,20 @@ head.next.next = new Node(6)
 head.next.next.next = new Node(4)
 head.next.next.next.next = new Node(2)
 
-console.log(`Is palindrome: ${is_palindromic_linked_list(head)}`)
+console.log(`Is palindrome: ${is_palindromic_linked_list(head)}`) //true
 
 head.next.next.next.next.next = new Node(2)
-console.log(`Is palindrome: ${is_palindromic_linked_list(head)}`)
+console.log(`Is palindrome: ${is_palindromic_linked_list(head)}`) //false
+
+secondhead = new Node(1);
+console.log(`Is palindrome: ${is_palindromic_linked_list(secondhead)}`) //true;
 
 
 //12/28 middle of the linked list
 // Given the head of a Singly LinkedList, write a method to return the middle node of the LinkedList. If the total number of nodes in the LinkedList is even, return the second middle node.
 
 // class Node {
-//   constructor(value, next=null){
+//   constructor(value, next=null){ 
 //     this.value = value;
 //     this.next = next;
 //   }
