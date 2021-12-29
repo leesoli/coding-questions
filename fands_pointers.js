@@ -2,7 +2,7 @@
 
 // Given the head of a Singly LinkedList, write a method to check if the LinkedList is a palindrome or not.
 
-// Your algorithm should use constant space and the input LinkedList should be in the original form once the algorithm is finished. The algorithm should have O(N)O(N) time complexity where ‘N’ is the number of nodes in the LinkedList.
+// Your algorithm should use constant space and the input LinkedList should be in the original form once the algorithm is finished. The algorithm should have O(N) time complexity where ‘N’ is the number of nodes in the LinkedList.
 class Node {
   constructor(value, next=null){
     this.value = value;
@@ -12,39 +12,76 @@ class Node {
 
 const is_palindromic_linked_list= function(head) {
   //consider if size of word is one letter or smaller;
-  if (head === null) { return false; }
-  if (head.next === null) { return true; }
+  if (head === null || head.next === null) { return true; }
   
-  var slow = head;
-  var fast = head;
+  let slow = head;
+  let fast = head;
   //find the middle length of the cycle.
   while (fast !== null && fast.next !== null) {
     slow = slow.next;
     fast = fast.next.next;
   }
+  
+  //reverse the second half of the cycle
+  let headSecondHalf = reverse(slow);
+  //save reversed half to revert cycle later
+  let copy = headSecondHalf;
+
+  while ((head !== null && headSecondHalf !== null)) {
+    //if letters not equal, it is not a palindrome
+    if (head.value !== headSecondHalf.value) { break; }
+
+    //continue along loop
+    head = head.next;
+    headSecondHalf = headSecondHalf.next;
+  }
+  //revert reversed half back to original
+  reverse(copy);
+ 
+  //after reaching the end, all values matched. 
+  if (head === null && headSecondHalf === null) {
+    return true;
+  }
+  return false;
 
   //then for each value starting from the middle half, save the previous values;
-  while (slow.next !== null) {
-    var last = slow;
-    slow = slow.next
-    slow.previous = last;
-  }
+  // while (slow.next !== null) {
+  //   var last = slow;
+  //   slow = slow.next
+  //   slow.previous = last;
+  // }
 
-  //compare from the last value to the middle half with the first value to middle half
-  var firstHalf = head;
-  while (true) {
-    slow = slow.previous;
-    firstHalf = firstHalf.next;
+  // //compare from the last value to the middle half with the first value to middle half
+  // var firstHalf = head;
+  // while (true) {
+  //   slow = slow.previous;
+  //   firstHalf = firstHalf.next;
 
-    if (slow.value !== firstHalf.value) {
-      return false;
-    }
-    if (slow === firstHalf) {
-      break;
-    }
-  }
-  return true;
+  //   if (slow.value !== firstHalf.value) {
+  //     return false;
+  //   }
+  //   if (slow === firstHalf) {
+  //     break;
+  //   }
+  // }
+  // return true;
 };
+
+const reverse = function (head) {
+  let prev = null;
+  while (head !== null) {
+    next = head.next; //2
+    head.next = prev; // next = null;
+    //shift prev
+    prev = head;  //1
+    //shift head
+    head = next; //head becomes 2
+  }
+  return prev;
+}
+
+//prev   head
+//null -> 1 -> 2 -> 3
 
 
 head = new Node(2)
