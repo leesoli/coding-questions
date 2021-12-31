@@ -1,48 +1,125 @@
-//12/28 palindrome linkedlist problem challenge 1
-
-// Given the head of a Singly LinkedList, write a method to check if the LinkedList is a palindrome or not.
-
-// Your algorithm should use constant space and the input LinkedList should be in the original form once the algorithm is finished. The algorithm should have O(N) time complexity where ‘N’ is the number of nodes in the LinkedList.
+//12/30. Rearrange a linked list
+// Given the head of a Singly LinkedList, write a method to modify the LinkedList such that the nodes from the second half of the LinkedList are inserted alternately to the nodes from the first half in reverse order. So if the LinkedList has nodes 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> null, your method should return 1 -> 6 -> 2 -> 5 -> 3 -> 4 -> null.
+// Your algorithm should not use any extra space and the input LinkedList should be modified in-place.
 class Node {
   constructor(value, next=null){
     this.value = value;
     this.next = next;
   }
+  
+
+  print_list() {
+    temp = this;
+    while (temp !== null) {
+      process.stdout.write(`${temp.value} `);
+      temp = temp.next;
+    }
+    console.log();
+  }
+  
 }
 
-const is_palindromic_linked_list= function(head) {
-  //consider if size of word is one letter or smaller;
-  if (head === null || head.next === null) { return true; }
-  
-  let slow = head;
+
+const reorder = function(head) {
+  if (head === null || head.next === null) { return; }
+
   let fast = head;
-  //find the middle length of the cycle.
+  let slow = head;
+
   while (fast !== null && fast.next !== null) {
-    slow = slow.next;
     fast = fast.next.next;
+    slow = slow.next;
+  }
+
+  //from slow, reverse the later half of the cycle
+  let secondHalf = reverse(slow);
+  let firstHalf = head; 
+
+  while (firstHalf !== null && secondHalf !== null) {
+    temp = firstHalf.next;
+    firstHalf.next = secondHalf;
+    firstHalf = temp;
+
+    temp = secondHalf.next;
+    secondHalf.next = firstHalf;
+    secondHalf = temp;
+  }
+  //set the next of the last node to null
+  if (firstHalf !== null) {
+    firstHalf.next = null;
   }
   
-  //reverse the second half of the cycle
-  let headSecondHalf = reverse(slow);
-  //save reversed half to revert cycle later
-  let copy = headSecondHalf;
+}
 
-  while ((head !== null && headSecondHalf !== null)) {
-    //if letters not equal, it is not a palindrome
-    if (head.value !== headSecondHalf.value) { break; }
+const reverse = function (head) {
+  let prev = null;
 
-    //continue along loop
-    head = head.next;
-    headSecondHalf = headSecondHalf.next;
+  while (head !== null) {
+    let next = head.next;
+    head.next = prev;
+    prev = head;
+    head = next;
   }
-  //revert reversed half back to original
-  reverse(copy);
+  return prev;
+}
+
+
+var head = new Node(2)
+head.next = new Node(4)
+head.next.next = new Node(6)
+head.next.next.next = new Node(8)
+head.next.next.next.next = new Node(10)
+head.next.next.next.next.next = new Node(12)
+reorder(head)
+head.print_list()
+
+
+
+//12/28 palindrome linkedlist problem challenge 1
+
+// Given the head of a Singly LinkedList, write a method to check if the LinkedList is a palindrome or not.
+
+// Your algorithm should use constant space and the input LinkedList should be in the original form once the algorithm is finished. The algorithm should have O(N) time complexity where ‘N’ is the number of nodes in the LinkedList.
+// class Node {
+//   constructor(value, next=null){
+//     this.value = value;
+//     this.next = next;
+//   }
+// }
+
+// const is_palindromic_linked_list= function(head) {
+//   //consider if size of word is one letter or smaller;
+//   if (head === null || head.next === null) { return true; }
+  
+//   let slow = head;
+//   let fast = head;
+//   //find the middle length of the cycle.
+//   while (fast !== null && fast.next !== null) {
+//     slow = slow.next;
+//     fast = fast.next.next;
+//   }
+  
+//   //reverse the second half of the cycle
+//   let headSecondHalf = reverse(slow);
+//   //save reversed half to revert cycle later
+//   let copy = headSecondHalf;
+
+//   while ((head !== null && headSecondHalf !== null)) {
+//     //if letters not equal, it is not a palindrome
+//     if (head.value !== headSecondHalf.value) { break; }
+
+//     //continue along loop
+//     head = head.next;
+//     headSecondHalf = headSecondHalf.next;
+//   }
+//   //revert reversed half back to original
+//   reverse(copy);
  
-  //after reaching the end, all values matched. 
-  if (head === null && headSecondHalf === null) {
-    return true;
-  }
-  return false;
+//   //after reaching the end, all values matched. 
+//   if (head === null && headSecondHalf === null) {
+//     return true;
+//   }
+//   return false;
 
   //then for each value starting from the middle half, save the previous values;
   // while (slow.next !== null) {
@@ -65,38 +142,38 @@ const is_palindromic_linked_list= function(head) {
   //   }
   // }
   // return true;
-};
+// };
 
-const reverse = function (head) {
-  let prev = null;
-  while (head !== null) {
-    next = head.next; //2
-    head.next = prev; // next = null;
-    //shift prev
-    prev = head;  //1
-    //shift head
-    head = next; //head becomes 2
-  }
-  return prev;
-}
+// const reverse = function (head) {
+//   let prev = null;
+//   while (head !== null) {
+//     next = head.next; //2
+//     head.next = prev; // next = null;
+//     //shift prev
+//     prev = head;  //1
+//     //shift head
+//     head = next; //head becomes 2
+//   }
+//   return prev;
+// }
 
-//prev   head
-//null -> 1 -> 2 -> 3
+// //prev   head
+// //null -> 1 -> 2 -> 3
 
 
-head = new Node(2)
-head.next = new Node(4)
-head.next.next = new Node(6)
-head.next.next.next = new Node(4)
-head.next.next.next.next = new Node(2)
+// head = new Node(2)
+// head.next = new Node(4)
+// head.next.next = new Node(6)
+// head.next.next.next = new Node(4)
+// head.next.next.next.next = new Node(2)
 
-console.log(`Is palindrome: ${is_palindromic_linked_list(head)}`) //true
+// console.log(`Is palindrome: ${is_palindromic_linked_list(head)}`) //true
 
-head.next.next.next.next.next = new Node(2)
-console.log(`Is palindrome: ${is_palindromic_linked_list(head)}`) //false
+// head.next.next.next.next.next = new Node(2)
+// console.log(`Is palindrome: ${is_palindromic_linked_list(head)}`) //false
 
-secondhead = new Node(1);
-console.log(`Is palindrome: ${is_palindromic_linked_list(secondhead)}`) //true;
+// secondhead = new Node(1);
+// console.log(`Is palindrome: ${is_palindromic_linked_list(secondhead)}`) //true;
 
 
 //12/28 middle of the linked list
