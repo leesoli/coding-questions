@@ -1,79 +1,112 @@
-//12/30. Rearrange a linked list
+//12/31. Challenge Prob 3 Cycle in a circular array
+// We are given an array containing positive and negative numbers. Suppose the array contains a number ‘M’ at a particular index. Now, if ‘M’ is positive we will move forward ‘M’ indices and if ‘M’ is negative move backwards ‘M’ indices. You should assume that the array is circular which means two things:
+
+// If, while moving forward, we reach the end of the array, we will jump to the first element to continue the movement.
+// If, while moving backward, we reach the beginning of the array, we will jump to the last element to continue the movement.
+// Write a method to determine if the array has a cycle. The cycle should have more than one element and should follow one direction which means the cycle should not contain both forward and backward movements.
+
+const circular_array_loop_exists = function(arr) {
+  //slow pointer for first value
+  let slow = 0;
+  let fast = 0;
+  let loop = 0;
+  //fast pointer moves forward or back however many indexes;
+  while (slow < arr.length) {
+    fast += arr[fast];
+    console.log(fast, 'fast')
+    if (fast === slow) { return true; }
+    
+    if (fast > arr.length - 1) {
+      fast = (fast - (arr.length - 1)) - 1;
+      loop++;
+      if (loop > 2) { slow++; }
+    }
+  }
+  return false;
+  
+};
+
+
+
+// console.log(`${circular_array_loop_exists([1, 2, -1, 2, 2])}`) //true
+// console.log(`${circular_array_loop_exists([2, 2, -1, 2])}`) // true
+console.log(`${circular_array_loop_exists([2, 1, -1, -2])}`) //false
+
+//12/30 & 12/31. Challenge Prob 2 Rearrange a linked list
 // Given the head of a Singly LinkedList, write a method to modify the LinkedList such that the nodes from the second half of the LinkedList are inserted alternately to the nodes from the first half in reverse order. So if the LinkedList has nodes 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> null, your method should return 1 -> 6 -> 2 -> 5 -> 3 -> 4 -> null.
 // Your algorithm should not use any extra space and the input LinkedList should be modified in-place.
-class Node {
-  constructor(value, next=null){
-    this.value = value;
-    this.next = next;
-  }
+
+// class Node {
+//   constructor(value, next=null){
+//     this.value = value;
+//     this.next = next;
+//   }
   
 
-  print_list() {
-    temp = this;
-    while (temp !== null) {
-      process.stdout.write(`${temp.value} `);
-      temp = temp.next;
-    }
-    console.log();
-  }
+//   print_list() {
+//     temp = this;
+//     while (temp !== null) {
+//       process.stdout.write(`${temp.value} `);
+//       temp = temp.next;
+//     }
+//     console.log();
+//   }
   
-}
+// }
 
 
-const reorder = function(head) {
-  if (head === null || head.next === null) { return; }
+// const reorder = function(head) {
+//   if (head === null || head.next === null) { return; }
 
-  let fast = head;
-  let slow = head;
+//   let fast = head;
+//   let slow = head;
 
-  while (fast !== null && fast.next !== null) {
-    fast = fast.next.next;
-    slow = slow.next;
-  }
+//   while (fast !== null && fast.next !== null) {
+//     fast = fast.next.next;
+//     slow = slow.next;
+//   }
 
-  //from slow, reverse the later half of the cycle
-  let secondHalf = reverse(slow);
-  let firstHalf = head; 
+//   //from slow, reverse the later half of the cycle
+//   let secondHalf = reverse(slow);
+//   let firstHalf = head; 
 
-  while (firstHalf !== null && secondHalf !== null) {
-    temp = firstHalf.next;
-    firstHalf.next = secondHalf;
-    firstHalf = temp;
+//   while (firstHalf !== null && secondHalf !== null) {
+//     temp = firstHalf.next;
+//     firstHalf.next = secondHalf;
+//     firstHalf = temp;
 
-    temp = secondHalf.next;
-    secondHalf.next = firstHalf;
-    secondHalf = temp;
-  }
-  //set the next of the last node to null
-  if (firstHalf !== null) {
-    firstHalf.next = null;
-  }
+//     temp = secondHalf.next;
+//     secondHalf.next = firstHalf;
+//     secondHalf = temp;
+//   }
+//   //set the next of the last node to null
+//   if (firstHalf !== null) {
+//     firstHalf.next = null;
+//   }
   
-}
+// }
 
-const reverse = function (head) {
-  let prev = null;
+// const reverse = function (head) {
+//   let prev = null;
 
-  while (head !== null) {
-    let next = head.next;
-    head.next = prev;
-    prev = head;
-    head = next;
-  }
-  return prev;
-}
-
-
-var head = new Node(2)
-head.next = new Node(4)
-head.next.next = new Node(6)
-head.next.next.next = new Node(8)
-head.next.next.next.next = new Node(10)
-head.next.next.next.next.next = new Node(12)
-reorder(head)
-head.print_list()
+//   while (head !== null) {
+//     let next = head.next;
+//     head.next = prev;
+//     prev = head;
+//     head = next;
+//   }
+//   return prev;
+// }
 
 
+// var head = new Node(2)
+// head.next = new Node(4)
+// head.next.next = new Node(6)
+// head.next.next.next = new Node(8)
+// head.next.next.next.next = new Node(10)
+// head.next.next.next.next.next = new Node(12)
+// reorder(head)
+// head.print_list()
 
 //12/28 palindrome linkedlist problem challenge 1
 
