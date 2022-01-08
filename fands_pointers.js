@@ -7,50 +7,50 @@
 
 //check for the same direction
 
-const circular_array_loop_exists = function(arr) {
-  for (let i = 0; i < arr.length; i++) {
-    let isForward = arr[i] >= 0; //true or false
-    let slow = i;
-    let fast = i;
+// const circular_array_loop_exists = function(arr) {
+//   for (let i = 0; i < arr.length; i++) {
+//     let isForward = arr[i] >= 0; //true or false
+//     let slow = i;
+//     let fast = i;
 
-  //if not in the same direction, there is no cycle
-  while (true) {
-    slow = find_next_index(arr, isForward, slow);
-    fast = find_next_index(arr, isForward, fast); 
-    if (fast !== -1) {
-      fast = find_next_index(arr, isForward, fast);
-    }
+//   //if not in the same direction, there is no cycle
+//   while (true) {
+//     slow = find_next_index(arr, isForward, slow);
+//     fast = find_next_index(arr, isForward, fast); 
+//     if (fast !== -1) {
+//       fast = find_next_index(arr, isForward, fast);
+//     }
 
-    if (slow === -1 || fast === -1 || slow === fast) { break; }
-  }
+//     if (slow === -1 || fast === -1 || slow === fast) { break; }
+//   }
 
-  if (slow !== -1 && slow === fast) { return true; }
-  }
-  return false;
-}
+//   if (slow !== -1 && slow === fast) { return true; }
+//   }
+//   return false;
+// }
 
-const find_next_index = function (arr, isForward, currentIndex) {
-  let direction = arr[currentIndex] >= 0;
+// const find_next_index = function (arr, isForward, currentIndex) {
+//   let direction = arr[currentIndex] >= 0;
 
-  if (direction !== isForward) { return -1; } //there is a change in direction
+//   if (direction !== isForward) { return -1; } //there is a change in direction
 
-  nextIndex = (currentIndex + arr[currentIndex]) % arr.length;
-  if (nextIndex < 0) {
-    nextIndex += arr.length //wrap around for neg numbers
-  }
+//   nextIndex = (currentIndex + arr[currentIndex]) % arr.length;
+//   if (nextIndex < 0) {
+//     nextIndex += arr.length //wrap around for neg numbers
+//   }
 
-  //checks to make sure cycle that pointer to same element after move is finished
-  if (nextIndex === currentIndex) {
-    nextIndex = -1;
-  }
+//   //checks to make sure cycle that pointer to same element after move is finished
+//   if (nextIndex === currentIndex) {
+//     nextIndex = -1;
+//   }
 
-  return nextIndex;
-}
+//   return nextIndex;
+// }
 
 
-console.log(`${circular_array_loop_exists([1, 2, -1, 2, 2])}`) //true
-console.log(`${circular_array_loop_exists([2, 2, -1, 2])}`) // true
-console.log(`${circular_array_loop_exists([2, 1, -1, -2])}`) //false
+// console.log(`${circular_array_loop_exists([1, 2, -1, 2, 2])}`) //true
+// console.log(`${circular_array_loop_exists([2, 2, -1, 2])}`) // true
+// console.log(`${circular_array_loop_exists([2, 1, -1, -2])}`) //false
 
 //12/30 & 12/31. Challenge Prob 2 Rearrange a linked list
 // Given the head of a Singly LinkedList, write a method to modify the LinkedList such that the nodes from the second half of the LinkedList are inserted alternately to the nodes from the first half in reverse order. So if the LinkedList has nodes 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> null, your method should return 1 -> 6 -> 2 -> 5 -> 3 -> 4 -> null.
