@@ -1,2 +1,2 @@
 language = "nodejs"
-run = "node fands_pointers.js"
+run = "node merge_intervals.js"
