@@ -11,49 +11,66 @@ class Interval {
   }
 }
 
-const can_attend_all_appointments = function(intervals) {
-  //sort the array by start time
-  intervals.sort((a,b) => { return a.start - b.start; })
- 
-  for (let i = 1; i < intervals.length; i++) {
-    if (intervals[i].start < intervals[i - 1].end) {
-      return false;
+// const can_attend_all_appointments = function(intervals) {
+//   //sort the array by start time
+//   intervals.sort((a,b) => { return a.start - b.start; })
+//   for (let i = 1; i < intervals.length; i++) {
+//     if (intervals[i].start < intervals[i - 1].end) {
+//       return false;
+//     }
+//   }
+
+//   return true;
+// };
+
+ const name_all_conflicting_appointments = function(intervals) {
+   //sort my array
+   intervals.sort((a,b) => { return a.start - b.start; })
+  
+   //declare empty results array
+   let results = [];
+
+   for (let i = 0; i < intervals.length - 1; i++) {
+    let j = i + 1;
+
+    while (j < intervals.length) {
+      if (intervals[i].end > intervals[j].start) {
+        results.push([intervals[i], intervals[j]])
+      }
+      j++;
     }
   }
 
+  let output = '';
+  for (let i = 0; i < results.length; i++) {
+    output += '[' + results[i][0].start + ',' + results[i][0].end + '] and [' + results[i][1].start + ',' + results[i][1].end + '] conflict.' + '\n';
+  }
+  return output;
+   //look for values that overlap until the start value of the next compared interval is greater than i 
+ };
 
-  // if (results.length === 0) { 
-  //   console.log('No appointments conflict')
-  // } else {
-  //   console.log(results)
-  //   for (let i = 0; i < results.length; i++) {
-  //     console.log(`[${results[i][0].start},${results[i][0].end}] and [${results[i][1].start},${results[i][0].end}] conflict.`)
-  //   }
-  // }
-  return true;
-};
 //time complexity is O(N * logN) => we iterate through the elements once making it O (n) but because we sort in the beginning becomes logN.
 //10 mins
 
-console.log(`Can attend all appointments: ${can_attend_all_appointments([
-  new Interval(1, 4),
-  new Interval(2, 5),
-  new Interval(7, 9),
-])}`); //false
+// console.log(`Can attend all appointments: ${can_attend_all_appointments([
+//   new Interval(1, 4),
+//   new Interval(2, 5),
+//   new Interval(7, 9),
+// ])}`); //false
 
-console.log(`Can attend all appointments: ${can_attend_all_appointments([
-  new Interval(6, 7),
-  new Interval(2, 4),
-  new Interval(8, 12),
-])}`); //true
+// console.log(`Can attend all appointments: ${can_attend_all_appointments([
+//   new Interval(6, 7),
+//   new Interval(2, 4),
+//   new Interval(8, 12),
+// ])}`); //true
 
-console.log(`Can attend all appointments: ${can_attend_all_appointments([
-  new Interval(4, 5),
-  new Interval(2, 3),
-  new Interval(3, 6),
-])}`); //false
+// console.log(`Can attend all appointments: ${can_attend_all_appointments([
+//   new Interval(4, 5),
+//   new Interval(2, 3),
+//   new Interval(3, 6),
+// ])}`); //false
 
-// console.log(can_attend_all_appointments([new Interval(4, 5), new Interval(2, 3), new Interval(3, 6), new Interval(5,7), new Interval(7,8)]))
+console.log(name_all_conflicting_appointments([new Interval(4, 5), new Interval(2, 3), new Interval(3, 6), new Interval(5,7), new Interval(7,8)])) // [4,5] and [3,6] conflict. [3,6] and [5,7] conflict.
 
 
 //1/10 Intervals intersection
