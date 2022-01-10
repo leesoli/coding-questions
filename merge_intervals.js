@@ -14,22 +14,26 @@ class Interval {
 const can_attend_all_appointments = function(intervals) {
   //sort the array by start time
   intervals.sort((a,b) => { return a.start - b.start; })
-
-  let index = 0;
-
-  while (index < intervals.length - 1) {
-  //check to see if the end time runs into the start time of the next interval
-    if (intervals[index].end > intervals[index + 1].start) {
-    //if it does, return false
-    return false;
+ 
+  for (let i = 1; i < intervals.length; i++) {
+    if (intervals[i].start < intervals[i - 1].end) {
+      return false;
     }
-    //otherwise, keep iterating through array
-    index++;
   }
 
+
+  // if (results.length === 0) { 
+  //   console.log('No appointments conflict')
+  // } else {
+  //   console.log(results)
+  //   for (let i = 0; i < results.length; i++) {
+  //     console.log(`[${results[i][0].start},${results[i][0].end}] and [${results[i][1].start},${results[i][0].end}] conflict.`)
+  //   }
+  // }
   return true;
 };
 //time complexity is O(N * logN) => we iterate through the elements once making it O (n) but because we sort in the beginning becomes logN.
+//10 mins
 
 console.log(`Can attend all appointments: ${can_attend_all_appointments([
   new Interval(1, 4),
@@ -48,6 +52,8 @@ console.log(`Can attend all appointments: ${can_attend_all_appointments([
   new Interval(2, 3),
   new Interval(3, 6),
 ])}`); //false
+
+// console.log(can_attend_all_appointments([new Interval(4, 5), new Interval(2, 3), new Interval(3, 6), new Interval(5,7), new Interval(7,8)]))
 
 
 //1/10 Intervals intersection
