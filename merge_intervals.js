@@ -1,7 +1,5 @@
-//1/8 Intervals intersection
-
-// Given two lists of intervals, find the intersection of these two lists. Each list consists of disjoint intervals sorted on their start time.
-
+//1/10 Conflicting Appointments (medium)
+// Given an array of intervals representing ‘N’ appointments, find out if a person can attend all the appointments.
 class Interval {
   constructor(start, end) {
     this.start = start;
@@ -13,49 +11,93 @@ class Interval {
   }
 }
 
-const merge = function(intervals_a, intervals_b) {
-  let result = [];
+const can_attend_all_appointments = function(intervals) {
+  //sort the array by start time
+  intervals.sort((a,b) => { return a.start - b.start; })
 
-  let i = 0;
-  let j = 0;
-  while (i < intervals_a.length && j < intervals_b.length) {
-    //find if intervals overlap
-    let first = intervals_a[i];
-    let second = intervals_b[j];
+  let index = 0;
 
-    a_overlaps_b = first.start >= second.start && first.start <= second.end;
-    b_overlaps_a = second.start >= first.start && second.start <= first.end;
-  
-
-    //if there are values in between, choose the max of the start, choose the min of the start
-    if (a_overlaps_b || b_overlaps_a) {
-      result.push(new Interval(Math.max(first.start, second.start), Math.min(first.end, second.end)));
+  while (index < intervals.length - 1) {
+  //check to see if the end time runs into the start time of the next interval
+    if (intervals[index].end > intervals[index + 1].start) {
+    //if it does, return false
+    return false;
     }
-    
-    if (first.end < second.end) {
-      i++;
-    } else {
-      j++;
-    }
-    
+    //otherwise, keep iterating through array
+    index++;
   }
 
-  return result;
+  return true;
 };
+//time complexity is O(N * logN) => we iterate through the elements once making it O (n) but because we sort in the beginning becomes logN.
 
-process.stdout.write('Intervals Intersection: ');
-let result = merge([new Interval(1, 3), new Interval(5, 6), new Interval(7, 9)], [new Interval(2, 3), new Interval(5, 7)]);
-for (i = 0; i < result.length; i++) {
-  result[i].print_interval();
-}
-console.log(); //[2, 3], [5, 6], [7, 7]
+console.log(`Can attend all appointments: ${can_attend_all_appointments([
+  new Interval(1, 4),
+  new Interval(2, 5),
+  new Interval(7, 9),
+])}`); //false
 
-process.stdout.write('Intervals Intersection: ');
-result = merge([new Interval(1, 3), new Interval(5, 7), new Interval(9, 12)], [new Interval(5, 10)]);
-for (i = 0; i < result.length; i++) {
-  result[i].print_interval();
-}
-console.log(); //[5, 7], [9, 10]
+console.log(`Can attend all appointments: ${can_attend_all_appointments([
+  new Interval(6, 7),
+  new Interval(2, 4),
+  new Interval(8, 12),
+])}`); //true
+
+console.log(`Can attend all appointments: ${can_attend_all_appointments([
+  new Interval(4, 5),
+  new Interval(2, 3),
+  new Interval(3, 6),
+])}`); //false
+
+
+//1/10 Intervals intersection
+
+// Given two lists of intervals, find the intersection of these two lists. Each list consists of disjoint intervals sorted on their start time.
+
+
+// const merge = function(intervals_a, intervals_b) {
+//   let result = [];
+
+//   let i = 0;
+//   let j = 0;
+//   while (i < intervals_a.length && j < intervals_b.length) {
+//     //find if intervals overlap
+//     let first = intervals_a[i];
+//     let second = intervals_b[j];
+
+//     a_overlaps_b = first.start >= second.start && first.start <= second.end;
+//     b_overlaps_a = second.start >= first.start && second.start <= first.end;
+  
+
+//     //if there are values in between, choose the max of the start, choose the min of the start
+//     if (a_overlaps_b || b_overlaps_a) {
+//       result.push(new Interval(Math.max(first.start, second.start), Math.min(first.end, second.end)));
+//     }
+    
+//     if (first.end < second.end) {
+//       i++;
+//     } else {
+//       j++;
+//     }
+    
+//   }
+
+//   return result;
+// };
+
+// process.stdout.write('Intervals Intersection: ');
+// let result = merge([new Interval(1, 3), new Interval(5, 6), new Interval(7, 9)], [new Interval(2, 3), new Interval(5, 7)]);
+// for (i = 0; i < result.length; i++) {
+//   result[i].print_interval();
+// }
+// console.log(); //[2, 3], [5, 6], [7, 7]
+
+// process.stdout.write('Intervals Intersection: ');
+// result = merge([new Interval(1, 3), new Interval(5, 7), new Interval(9, 12)], [new Interval(5, 10)]);
+// for (i = 0; i < result.length; i++) {
+//   result[i].print_interval();
+// }
+// console.log(); //[5, 7], [9, 10]
 
 
 //1/8 Insert Interval (medium) problem
