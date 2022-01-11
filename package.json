@@ -1,0 +1,22 @@
+{
+  "name": "coding-questions-4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm install --save collections"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dlthfl87/coding-questions.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dlthfl87/coding-questions/issues"
+  },
+  "homepage": "https://github.com/dlthfl87/coding-questions#readme",
+  "dependencies": {}
+}
