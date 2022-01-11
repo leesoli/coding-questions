@@ -1,45 +1,96 @@
+//1/11 Maximum CPU Load challenge #2 problem (difficulty: hard)
+// We are given a list of Jobs. Each job has a Start time, an End time, and a CPU load when it is running. Our goal is to find the maximum CPU load at any time if all the jobs are running on the same machine.
+
+const Heap = require('./collections/heap');
+
+class Job {
+  constructor(start, end, cpu_load) {
+    this.start = start;
+    this.end = end;
+    this.cpu_load = cpu_load;
+  }
+};
+
+const find_max_cpu_load = function(jobs) {
+
+jobs.sort((a, b) => a.start - b.start);
+//count of max cpu load
+let maxLoad = 0;
+let load = 0;
+let minHeap = new Heap([], null, (a,b) => b.end - a.end);
+
+for (let i = 0; i < jobs.length; i++) {
+  while (minHeap.length > 0 && jobs[i].start >= minHeap.peek().end) {
+    minHeap.pop();
+    load = 0;
+  }
+
+  minHeap.push(jobs[i]);
+  load += jobs[i].cpu_load;
+  maxLoad = Math.max(load, maxLoad)
+}
+//keep record of all the end times to see if there are more than one computer run at once, if so increase the count
+//store the maximum cpu load
+  return maxLoad;
+};
+
+//count of max cpu load
+//keep record of all the end times to see if there are more than one computer run at once, if so increase the count
+//store the maximum cpu load
+
+// 1-4.  3 
+// 2-5.  4.    from 2-4 7 
+// 7-9.  6
+console.log(`Maximum CPU load at any time: ${find_max_cpu_load(
+      [new Job(1, 4, 3), new Job(2, 5, 4), new Job(7, 9, 6)])}`)
+// console.log(`Maximum CPU load at any time: ${find_max_cpu_load(
+//       [new Job(6, 7, 10), new Job(2, 4, 11), new Job(8, 12, 15)])}`)
+// console.log(`"Maximum CPU load at any time: ${find_max_cpu_load(
+//       [new Job(1, 4, 2), new Job(2, 4, 1), new Job(3, 6, 5)])}`)
+
+
 //1/10 & 1/11 minimum meeetings room challenge #1 problem (difficulty: hard)
 // Given a list of intervals representing the start and end time of ‘N’ meetings, find the minimum number of rooms required to hold all the meetings.
 
 
-const Heap = require('./collections/heap'); //http://www.collectionsjs.com
+// const Heap = require('./collections/heap'); //http://www.collectionsjs.com
 
-class Meeting {
-  constructor(start, end) {
-    this.start = start;
-    this.end = end;
-  }
-};
+// class Meeting {
+//   constructor(start, end) {
+//     this.start = start;
+//     this.end = end;
+//   }
+// };
 
-function min_meeting_rooms(meetings) {
-  // sort the meetings by start time
-  meetings.sort((a, b) => a.start - b.start);
+// function min_meeting_rooms(meetings) {
+//   // sort the meetings by start time
+//   meetings.sort((a, b) => a.start - b.start);
 
-  let minRooms = 0,
-    minHeap = new Heap([], null, ((a, b) => b.end - a.end));
-  for (i = 0; i < meetings.length; i++) {
-    // remove all the meetings that have ended
-    while (minHeap.length > 0 && meetings[i].start >= minHeap.peek().end) {
-      minHeap.pop();
-    }
-    // add the current meeting into min_heap
-    minHeap.push(meetings[i]);
-    // all active meetings are in the min_heap, so we need rooms for all of them.
-    minRooms = Math.max(minRooms, minHeap.length);
-  }
-  return minRooms;
-}
+//   let minRooms = 0,
+//     minHeap = new Heap([], null, ((a, b) => b.end - a.end));
+//   for (i = 0; i < meetings.length; i++) {
+//     // remove all the meetings that have ended
+//     while (minHeap.length > 0 && meetings[i].start >= minHeap.peek().end) {
+//       minHeap.pop();
+//     }
+//     // add the current meeting into min_heap
+//     minHeap.push(meetings[i]);
+//     // all active meetings are in the min_heap, so we need rooms for all of them.
+//     minRooms = Math.max(minRooms, minHeap.length);
+//   }
+//   return minRooms;
+// }
 
-console.log(`Minimum meeting rooms required: ${min_meeting_rooms(
-    [new Meeting(4, 5), new Meeting(2, 3), new Meeting(2, 4), new Meeting(3, 5)])}`) //2
-console.log(`Minimum meeting rooms required: ${min_meeting_rooms(
-    [new Meeting(1, 4), new Meeting(2, 5), new Meeting(7, 9)])}`) //2
-console.log(`Minimum meeting rooms required: ${min_meeting_rooms(
-    [new Meeting(6, 7), new Meeting(2, 4), new Meeting(8, 12)])}`) //1
-console.log(`Minimum meeting rooms required: ${min_meeting_rooms(
-    [new Meeting(1, 4), new Meeting(2, 3), new Meeting(3, 6)])}`) //2
-console.log(`Minimum meeting rooms required: ${min_meeting_rooms(
-    [new Meeting(4, 5), new Meeting(2, 3), new Meeting(2, 4), new Meeting(3, 5)])}`) //2
+// console.log(`Minimum meeting rooms required: ${min_meeting_rooms(
+//     [new Meeting(4, 5), new Meeting(2, 3), new Meeting(2, 4), new Meeting(3, 5)])}`) //2
+// console.log(`Minimum meeting rooms required: ${min_meeting_rooms(
+//     [new Meeting(1, 4), new Meeting(2, 5), new Meeting(7, 9)])}`) //2
+// console.log(`Minimum meeting rooms required: ${min_meeting_rooms(
+//     [new Meeting(6, 7), new Meeting(2, 4), new Meeting(8, 12)])}`) //1
+// console.log(`Minimum meeting rooms required: ${min_meeting_rooms(
+//     [new Meeting(1, 4), new Meeting(2, 3), new Meeting(3, 6)])}`) //2
+// console.log(`Minimum meeting rooms required: ${min_meeting_rooms(
+//     [new Meeting(4, 5), new Meeting(2, 3), new Meeting(2, 4), new Meeting(3, 5)])}`) //2
 
 //1/10 Conflicting Appointments (medium)
 // Given an array of intervals representing ‘N’ appointments, find out if a person can attend all the appointments.
