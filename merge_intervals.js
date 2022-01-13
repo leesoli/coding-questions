@@ -1,38 +1,202 @@
+//1/13 Merge Intervals
+class Interval {
+  constructor(start, end) {
+    this.start = start;
+    this.end = end;
+  }
+
+  get_interval() {
+    return "[" + this.start + ", " + this.end + "]";
+  }
+}
+
+
+const merge = function(intervals) {
+  merged = []
+  intervals.sort((a,b) => a.start - b.start);
+  let start = intervals[0].start;
+  let end = intervals[0].end;
+  //if the current start is less than the previous end, then merge them
+  for (i = 1; i < intervals.length; i++) {
+    if (intervals[i].start <= end) {
+      end = Math.max(end, intervals[i].end);
+    } else {
+      merged.push(new Interval(start, end));
+      start = intervals[i].start;
+      end = intervals[i].end
+    }
+  }
+  merged.push(new Interval(start, end));
+  
+  return merged;
+};
+
+merged_intervals = merge([new Interval(1, 4), new Interval(2, 5), new Interval(7, 9)]);
+result = "";
+for(i=0; i < merged_intervals.length; i++) {
+  result += merged_intervals[i].get_interval() + " ";
+}
+console.log(`Merged intervals: ${result}`)
+
+
+merged_intervals = merge([new Interval(6, 7), new Interval(2, 4), new Interval(5, 9)]);
+result = "";
+for(i=0; i < merged_intervals.length; i++) {
+  result += merged_intervals[i].get_interval() + " ";
+}
+console.log(`Merged intervals: ${result}`)
+
+merged_intervals = merge([new Interval(1, 4), new Interval(2, 6), new Interval(3, 5)]);
+result = "";
+for(i=0; i < merged_intervals.length; i++) {
+  result += merged_intervals[i].get_interval() + " ";
+}
+console.log(`Merged intervals: ${result}`)
+
+
+//1/11 Employee Free Time challenge #3 (hard)
+// For ‘K’ employees, we are given a list of intervals representing the working hours of each employee. Our goal is to find out if there is a free interval that is common to all employees. You can assume that each list of employee working hours is sorted on the start time.
+// class Interval {
+//     constructor(start, end) {
+//         this.start = start;
+//         this.end = end;
+//     }
+
+//     get_interval() {
+//         return "[" + this.start + ", " + this.end + "]";
+//     }
+// };
+
+// const find_employee_free_time = function(schedule) {
+//     result = [];
+//     let merged = [];
+//     //merge all the conflicting schedules together by storing the min start time and the max start time
+//     let i = 0; 
+    
+//     //at the end push all the remaining times to the result array
+//     return result;
+// };
+// //can have more than 2 employees
+// // time in between : 3-5
+// // time in between: 3-6
+// //employee1: 1-3, 5-6 employee2: 2-3, 6-8
+
+// input = [[new Interval(1, 3), new Interval(5, 6)], [
+//     new Interval(2, 3), new Interval(6, 8)]];
+// intervals = find_employee_free_time(input)
+// result = "Free intervals: ";
+// for(i=0; i < intervals.length; i++)
+//   result += intervals[i].get_interval();
+// console.log(result); //[3,5]
+
+
+// class Interval {
+//   constructor(start, end) {
+//     this.start = start;
+//     this.end = end;
+//   }
+
+//   print_interval() {
+//     process.stdout.write(`[${this.start}, ${this.end}]`);
+//   }
+// }
+
+
+// class EmployeeInterval {
+//   constructor(interval, employeeIndex, intervalIndex) {
+//     this.interval = interval; // interval representing employee's working hours
+//     // index of the list containing working hours of this employee
+//     this.employeeIndex = employeeIndex;
+//     this.intervalIndex = intervalIndex; // index of the interval in the employee list
+//   }
+// }
+
+// function find_employee_free_time(schedule) {
+//   let n = schedule.length,
+//     result = [];
+//   if (schedule === null || n === 0) {
+//     return result;
+//   }
+//   minHeap = new Heap([], null, ((a, b) => b.interval.start - a.interval.start));
+//   // insert the first interval of each employee to the queue
+//   for (i = 0; i < n; i++) {
+//     minHeap.push(new EmployeeInterval(schedule[i][0], i, 0));
+//   }
+//   previousInterval = minHeap.peek().interval;
+//   while (minHeap.length > 0) {
+//     const queueTop = minHeap.pop();
+//     // if previousInterval is not overlapping with the next interval, insert a free interval
+//     if (previousInterval.end < queueTop.interval.start) {
+//       result.push(new Interval(previousInterval.end, queueTop.interval.start));
+//       previousInterval = queueTop.interval;
+//     } else { // overlapping intervals, update the previousInterval if needed
+//       if (previousInterval.end < queueTop.interval.end) {
+//         previousInterval = queueTop.interval;
+//       }
+//     }
+//     // if there are more intervals available for(the same employee, add their next interval
+//     const employeeSchedule = schedule[queueTop.employeeIndex];
+//     if (employeeSchedule.length > queueTop.intervalIndex + 1) {
+//       minHeap.push(new EmployeeInterval(
+//         employeeSchedule[queueTop.intervalIndex + 1], queueTop.employeeIndex,
+//         queueTop.intervalIndex + 1,
+//       ));
+//     }
+//   }
+//   return result;
+// }
+
+
+// input = [[new Interval(1, 3), new Interval(9, 12)], [
+//     new Interval(2, 4)], [new Interval(6, 8)]];
+// intervals = find_employee_free_time(input)
+// result = "Free intervals: ";
+// for(i=0; i < intervals.length; i++)
+//   result += intervals[i].get_interval();
+// console.log(result); //[4,6], [8,9]
+
+// input = [[new Interval(1, 3)], [
+//     new Interval(2, 4)], [new Interval(3, 5), new Interval(7, 9)]];
+// intervals = find_employee_free_time(input)
+// result = "Free intervals: ";
+// for(i=0; i < intervals.length; i++)
+//   result += intervals[i].get_interval();
+// console.log(result); //[5,7]
+
 //1/11 Maximum CPU Load challenge #2 problem (difficulty: hard)
 // We are given a list of Jobs. Each job has a Start time, an End time, and a CPU load when it is running. Our goal is to find the maximum CPU load at any time if all the jobs are running on the same machine.
 
-const Heap = require('./collections/heap');
+// const Heap = require('./collections/heap');
 
-class Job {
-  constructor(start, end, cpu_load) {
-    this.start = start;
-    this.end = end;
-    this.cpu_load = cpu_load;
-  }
-};
+// class Job {
+//   constructor(start, end, cpu_load) {
+//     this.start = start;
+//     this.end = end;
+//     this.cpu_load = cpu_load;
+//   }
+// };
 
-const find_max_cpu_load = function(jobs) {
+// const find_max_cpu_load = function(jobs) {
 
-jobs.sort((a, b) => a.start - b.start);
-//count of max cpu load
-let maxLoad = 0;
-let load = 0;
-let minHeap = new Heap([], null, (a,b) => b.end - a.end);
+// jobs.sort((a, b) => a.start - b.start);
+// //count of max cpu load
+// let maxLoad = 0;
+// let load = 0;
+// let minHeap = new Heap([], null, (a,b) => b.end - a.end);
 
-for (let i = 0; i < jobs.length; i++) {
-  while (minHeap.length > 0 && jobs[i].start >= minHeap.peek().end) {
-    minHeap.pop();
-    load = 0;
-  }
+// for (let i = 0; i < jobs.length; i++) {
+//   while (minHeap.length > 0 && jobs[i].start >= minHeap.peek().end) {
+//     load -= minHeap.pop().cpu_load
+//   }
 
-  minHeap.push(jobs[i]);
-  load += jobs[i].cpu_load;
-  maxLoad = Math.max(load, maxLoad)
-}
-//keep record of all the end times to see if there are more than one computer run at once, if so increase the count
-//store the maximum cpu load
-  return maxLoad;
-};
+//   minHeap.push(jobs[i]);
+//   load += jobs[i].cpu_load;
+//   maxLoad = Math.max(load, maxLoad)
+// }
+// //keep record of all the end times to see if there are more than one computer run at once, if so increase the count
+// //store the maximum cpu load
+//   return maxLoad;
+// };
 
 //count of max cpu load
 //keep record of all the end times to see if there are more than one computer run at once, if so increase the count
@@ -41,8 +205,8 @@ for (let i = 0; i < jobs.length; i++) {
 // 1-4.  3 
 // 2-5.  4.    from 2-4 7 
 // 7-9.  6
-console.log(`Maximum CPU load at any time: ${find_max_cpu_load(
-      [new Job(1, 4, 3), new Job(2, 5, 4), new Job(7, 9, 6)])}`)
+// console.log(`Maximum CPU load at any time: ${find_max_cpu_load(
+//       [new Job(1, 4, 3), new Job(2, 5, 4), new Job(7, 9, 6)])}`)
 // console.log(`Maximum CPU load at any time: ${find_max_cpu_load(
 //       [new Job(6, 7, 10), new Job(2, 4, 11), new Job(8, 12, 15)])}`)
 // console.log(`"Maximum CPU load at any time: ${find_max_cpu_load(
