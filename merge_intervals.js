@@ -1,60 +1,70 @@
-//1/13 Merge Intervals
-class Interval {
-  constructor(start, end) {
-    this.start = start;
-    this.end = end;
+//1/13 Implementing Max Heap in Javascript
+class MaxHeap {
+  constructor() {
+    this.values = []; 
   }
+  //store the largest value as parent node
+  add(value) {
+    this.values.push(value);
+    //check to see the value added is lower than its parent
+    let index = this.values.length - 1;
+    let current = this.values[index];
+    let parentIndex = Math.floor((index - 1)/ 2);
+    let parent = this.values[parentIndex];
 
-  get_interval() {
-    return "[" + this.start + ", " + this.end + "]";
-  }
-}
-
-
-const merge = function(intervals) {
-  merged = []
-  intervals.sort((a,b) => a.start - b.start);
-  let start = intervals[0].start;
-  let end = intervals[0].end;
-  //if the current start is less than the previous end, then merge them
-  for (i = 1; i < intervals.length; i++) {
-    if (intervals[i].start <= end) {
-      end = Math.max(end, intervals[i].end);
-    } else {
-      merged.push(new Interval(start, end));
-      start = intervals[i].start;
-      end = intervals[i].end
+    while (index > 0) {
+      if (parent < current) {
+        [this.values[parentIndex], this.values[index]] = [this.values[index], this.values[parentIndex]];
+        index = parentIndex;
+      } else break;
     }
   }
-  merged.push(new Interval(start, end));
-  
-  return merged;
-};
+  getMax() {
+    const max = this.values[0];
+    //move the last value as the first value in heap
+    let lastValue = this.values.pop();
+    this.values[0] = lastValue;
 
-merged_intervals = merge([new Interval(1, 4), new Interval(2, 5), new Interval(7, 9)]);
-result = "";
-for(i=0; i < merged_intervals.length; i++) {
-  result += merged_intervals[i].get_interval() + " ";
+    //continue to balance the heap (heapify)
+    //check left and right child nodes;
+    let index = 0;
+    let current = this.values[index];
+    let length = this.values.length;
+
+    while (true) {
+      let leftChildIndex = index * 2 + 1;
+      let rightChildIndex = index * 2 + 2;
+      let leftChild, rightChild;
+      let swap = null;
+
+      if (leftChildIndex < length) {
+        let leftChild = this.values[leftChildIndex];
+        if (current < leftChild) { swap = leftChildIndex; }
+      }
+      if (rightChildIndex < length) {
+        let rightChild = this.values[rightChildIndex];
+        if ((swap === null && current < rightChild) || (swap !== null && leftChild < rightChild)) {
+          swap = rightChildIndex;
+        }
+      }
+      if (swap === null) { break; }
+      [this.values[index], this.values[swap]] = [this.values[swap], this.values[index]];
+      index = swap;
+    }
+    return max;
+  }
+
 }
-console.log(`Merged intervals: ${result}`)
 
+const tree = new MaxHeap();
+tree.add(4);
+tree.add(2);
+tree.add(6);
+tree.add(1);
+console.log(tree)
+console.log(tree.getMax());
 
-merged_intervals = merge([new Interval(6, 7), new Interval(2, 4), new Interval(5, 9)]);
-result = "";
-for(i=0; i < merged_intervals.length; i++) {
-  result += merged_intervals[i].get_interval() + " ";
-}
-console.log(`Merged intervals: ${result}`)
-
-merged_intervals = merge([new Interval(1, 4), new Interval(2, 6), new Interval(3, 5)]);
-result = "";
-for(i=0; i < merged_intervals.length; i++) {
-  result += merged_intervals[i].get_interval() + " ";
-}
-console.log(`Merged intervals: ${result}`)
-
-
-//1/11 Employee Free Time challenge #3 (hard)
+//1/11- 1/13 Employee Free Time challenge #3 (hard)
 // For ‘K’ employees, we are given a list of intervals representing the working hours of each employee. Our goal is to find out if there is a free interval that is common to all employees. You can assume that each list of employee working hours is sorted on the start time.
 // class Interval {
 //     constructor(start, end) {
@@ -69,17 +79,10 @@ console.log(`Merged intervals: ${result}`)
 
 // const find_employee_free_time = function(schedule) {
 //     result = [];
-//     let merged = [];
-//     //merge all the conflicting schedules together by storing the min start time and the max start time
-//     let i = 0; 
-    
-//     //at the end push all the remaining times to the result array
+//     // TODO: Write your code here
 //     return result;
 // };
-// //can have more than 2 employees
-// // time in between : 3-5
-// // time in between: 3-6
-// //employee1: 1-3, 5-6 employee2: 2-3, 6-8
+
 
 // input = [[new Interval(1, 3), new Interval(5, 6)], [
 //     new Interval(2, 3), new Interval(6, 8)]];
@@ -87,64 +90,7 @@ console.log(`Merged intervals: ${result}`)
 // result = "Free intervals: ";
 // for(i=0; i < intervals.length; i++)
 //   result += intervals[i].get_interval();
-// console.log(result); //[3,5]
-
-
-// class Interval {
-//   constructor(start, end) {
-//     this.start = start;
-//     this.end = end;
-//   }
-
-//   print_interval() {
-//     process.stdout.write(`[${this.start}, ${this.end}]`);
-//   }
-// }
-
-
-// class EmployeeInterval {
-//   constructor(interval, employeeIndex, intervalIndex) {
-//     this.interval = interval; // interval representing employee's working hours
-//     // index of the list containing working hours of this employee
-//     this.employeeIndex = employeeIndex;
-//     this.intervalIndex = intervalIndex; // index of the interval in the employee list
-//   }
-// }
-
-// function find_employee_free_time(schedule) {
-//   let n = schedule.length,
-//     result = [];
-//   if (schedule === null || n === 0) {
-//     return result;
-//   }
-//   minHeap = new Heap([], null, ((a, b) => b.interval.start - a.interval.start));
-//   // insert the first interval of each employee to the queue
-//   for (i = 0; i < n; i++) {
-//     minHeap.push(new EmployeeInterval(schedule[i][0], i, 0));
-//   }
-//   previousInterval = minHeap.peek().interval;
-//   while (minHeap.length > 0) {
-//     const queueTop = minHeap.pop();
-//     // if previousInterval is not overlapping with the next interval, insert a free interval
-//     if (previousInterval.end < queueTop.interval.start) {
-//       result.push(new Interval(previousInterval.end, queueTop.interval.start));
-//       previousInterval = queueTop.interval;
-//     } else { // overlapping intervals, update the previousInterval if needed
-//       if (previousInterval.end < queueTop.interval.end) {
-//         previousInterval = queueTop.interval;
-//       }
-//     }
-//     // if there are more intervals available for(the same employee, add their next interval
-//     const employeeSchedule = schedule[queueTop.employeeIndex];
-//     if (employeeSchedule.length > queueTop.intervalIndex + 1) {
-//       minHeap.push(new EmployeeInterval(
-//         employeeSchedule[queueTop.intervalIndex + 1], queueTop.employeeIndex,
-//         queueTop.intervalIndex + 1,
-//       ));
-//     }
-//   }
-//   return result;
-// }
+// console.log(result);
 
 
 // input = [[new Interval(1, 3), new Interval(9, 12)], [
@@ -153,7 +99,7 @@ console.log(`Merged intervals: ${result}`)
 // result = "Free intervals: ";
 // for(i=0; i < intervals.length; i++)
 //   result += intervals[i].get_interval();
-// console.log(result); //[4,6], [8,9]
+// console.log(result);
 
 // input = [[new Interval(1, 3)], [
 //     new Interval(2, 4)], [new Interval(3, 5), new Interval(7, 9)]];
@@ -161,7 +107,8 @@ console.log(`Merged intervals: ${result}`)
 // result = "Free intervals: ";
 // for(i=0; i < intervals.length; i++)
 //   result += intervals[i].get_interval();
-// console.log(result); //[5,7]
+// console.log(result);
+
 
 //1/11 Maximum CPU Load challenge #2 problem (difficulty: hard)
 // We are given a list of Jobs. Each job has a Start time, an End time, and a CPU load when it is running. Our goal is to find the maximum CPU load at any time if all the jobs are running on the same machine.
