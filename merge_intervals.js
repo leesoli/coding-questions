@@ -1,3 +1,146 @@
+//1/11- 1/13 Employee Free Time challenge #3 (hard)
+// For ‘K’ employees, we are given a list of intervals representing the working hours of each employee. Our goal is to find out if there is a free interval that is common to all employees. You can assume that each list of employee working hours is sorted on the start time.
+class MinHeap {
+  constructor() {
+    this.values = []; 
+  }
+  //store the largest value as parent node
+  add(value) {
+    this.values.push(value);
+    //check to see the value added is lower than its parent
+    let index = this.values.length - 1;
+    let current = this.values[index];
+
+    while (index > 0) {
+      let parentIndex = Math.floor((index - 1)/ 2);
+      if (index - parentIndex > 1) {
+        let previous = this.values[index - 1]
+        if (current < previous) { 
+          [this.values[index], this.values[index - 1]] = [previous, current];
+        }
+      }
+      let parent = this.values[parentIndex];
+      if (parent >= current) {
+        [this.values[parentIndex], this.values[index]] = [this.values[index], this.values[parentIndex]];
+        index = parentIndex;
+      } else break;
+    }
+  }
+  getMin() {
+ 
+    let min = this.values[0];
+    let popped = this.values.pop();
+    this.values[0] = popped;
+    let length = this.values.length;
+
+    let index = 0;
+    let current = this.values[index];
+
+    //continue to heapify array
+    while (true) {
+      let leftChildIndex = index * 2 + 1;
+      let rightChildIndex = index * 2 + 2;
+      let leftChild, rightChild;
+      let swap = null;
+      
+      if (leftChildIndex < length) {
+        leftChild = this.values[leftChildIndex];
+        if (current > leftChild) {
+          swap = leftChildIndex;
+        }
+      }
+      if (rightChildIndex < length) {
+        rightChild = this.values[rightChildIndex];
+        if ((swap === null && current > rightChild) || (swap !== null && leftChild < rightChild)) {
+          swap = rightChildIndex;
+        }
+      }
+ 
+      if (swap === null) { break; }
+      [this.values[index], this.values[swap]] = [this.values[swap], this.values[index]];
+      index = swap;
+    }
+
+
+
+    return min;
+  }
+}
+
+// class Interval {
+//     constructor(start, end) {
+//         this.start = start;
+//         this.end = end;
+//     }
+
+//     get_interval() {
+//         return "[" + this.start + ", " + this.end + "]";
+//     }
+// };
+
+
+
+// const find_employee_free_time = function(schedule) {
+//     result = [];
+//     const minHeap = new MaxHeap();
+//     //iterate through all the schedules add value to heap
+
+//     for (let i = 0; i < schedule.length; i++) {
+//       for (let j = 0; j < schedule[i].length; j++) {
+//         console.log(schedule[i][j].start)
+//         minHeap.add(schedule[i][j].start)
+//       }
+//     }
+//     console.log(minHeap)
+  
+//     //iterate through values in heap, check for overlapping values
+//     //if they do, merge those values
+//     //if not, push to result
+
+//     return result;
+// };
+
+//emp 1: 1-3, 5-6, emp 2: 2-3, 6-8.  //3-5
+//min heap: 1-3, 2-3, 5-6, 6-8. 
+
+const heap = new MinHeap();
+heap.add(1)
+heap.add(5)
+heap.add(2)
+heap.add(6)
+console.log(heap)
+// console.log(heap.getMin())
+// console.log(heap)
+// console.log(heap.getMin())
+// console.log(heap)
+// console.log(heap.getMin())
+
+
+// input = [[new Interval(1, 3), new Interval(5, 6)], [
+//     new Interval(2, 3), new Interval(6, 8)]];
+// intervals = find_employee_free_time(input)
+// result = "Free intervals: ";
+// for(i=0; i < intervals.length; i++)
+//   result += intervals[i].get_interval();
+// console.log(result); //[3,5]
+
+
+// input = [[new Interval(1, 3), new Interval(9, 12)], [
+//     new Interval(2, 4)], [new Interval(6, 8)]];
+// intervals = find_employee_free_time(input)
+// result = "Free intervals: ";
+// for(i=0; i < intervals.length; i++)
+//   result += intervals[i].get_interval();
+// console.log(result);
+
+// input = [[new Interval(1, 3)], [
+//     new Interval(2, 4)], [new Interval(3, 5), new Interval(7, 9)]];
+// intervals = find_employee_free_time(input)
+// result = "Free intervals: ";
+// for(i=0; i < intervals.length; i++)
+//   result += intervals[i].get_interval();
+// console.log(result);
+
 //1/13 Implementing Max Heap in Javascript
 class MaxHeap {
   constructor() {
@@ -9,14 +152,37 @@ class MaxHeap {
     //check to see the value added is lower than its parent
     let index = this.values.length - 1;
     let current = this.values[index];
+
+    while (index > 0) {
+
+    console.log(this.values)
     let parentIndex = Math.floor((index - 1)/ 2);
     let parent = this.values[parentIndex];
 
-    while (index > 0) {
-      if (parent < current) {
-        [this.values[parentIndex], this.values[index]] = [this.values[index], this.values[parentIndex]];
+    //compare left and right child values, switch if the left is less than the right
+      if (parentIndex === 0) {
+        if (parent <= current) {
+          [this.values[parentIndex], this.values[index]] = [current, parent];
+          if (this.values[index - 1] < this.values[index]) {
+            [this.values[index - 1], this.values[index]] = [this.values[index], this.values[index - 1]];
+            break;
+          }
+        } else { break; }
+      } else {
+        //check to see if i have a left or right value;
+        let isRight = index % parentIndex === 2;
+
+        // if it is a right value, need to compare with left value, and switch numbers if left is less than right.
+        if (isRight && this.values[index - 1] <= current) {
+          [this.values[index - 1], this.values[index]] = [this.values[index], this.values[index - 1]]
+        }
+        if (parent <= current && !isRight) {
+        [this.values[parentIndex], this.values[index]] = [current, parent];
         index = parentIndex;
-      } else break;
+        } else if (parent > current) {
+          break;
+        }
+      }
     }
   }
   getMax() {
@@ -62,53 +228,7 @@ tree.add(2);
 tree.add(6);
 tree.add(1);
 console.log(tree)
-console.log(tree.getMax());
-
-//1/11- 1/13 Employee Free Time challenge #3 (hard)
-// For ‘K’ employees, we are given a list of intervals representing the working hours of each employee. Our goal is to find out if there is a free interval that is common to all employees. You can assume that each list of employee working hours is sorted on the start time.
-// class Interval {
-//     constructor(start, end) {
-//         this.start = start;
-//         this.end = end;
-//     }
-
-//     get_interval() {
-//         return "[" + this.start + ", " + this.end + "]";
-//     }
-// };
-
-// const find_employee_free_time = function(schedule) {
-//     result = [];
-//     // TODO: Write your code here
-//     return result;
-// };
-
-
-// input = [[new Interval(1, 3), new Interval(5, 6)], [
-//     new Interval(2, 3), new Interval(6, 8)]];
-// intervals = find_employee_free_time(input)
-// result = "Free intervals: ";
-// for(i=0; i < intervals.length; i++)
-//   result += intervals[i].get_interval();
-// console.log(result);
-
-
-// input = [[new Interval(1, 3), new Interval(9, 12)], [
-//     new Interval(2, 4)], [new Interval(6, 8)]];
-// intervals = find_employee_free_time(input)
-// result = "Free intervals: ";
-// for(i=0; i < intervals.length; i++)
-//   result += intervals[i].get_interval();
-// console.log(result);
-
-// input = [[new Interval(1, 3)], [
-//     new Interval(2, 4)], [new Interval(3, 5), new Interval(7, 9)]];
-// intervals = find_employee_free_time(input)
-// result = "Free intervals: ";
-// for(i=0; i < intervals.length; i++)
-//   result += intervals[i].get_interval();
-// console.log(result);
-
+// console.log(tree.getMax());
 
 //1/11 Maximum CPU Load challenge #2 problem (difficulty: hard)
 // We are given a list of Jobs. Each job has a Start time, an End time, and a CPU load when it is running. Our goal is to find the maximum CPU load at any time if all the jobs are running on the same machine.
