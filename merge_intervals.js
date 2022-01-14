@@ -13,17 +13,35 @@ class MinHeap {
 
     while (index > 0) {
       let parentIndex = Math.floor((index - 1)/ 2);
-      if (index - parentIndex > 1) {
-        let previous = this.values[index - 1]
-        if (current < previous) { 
-          [this.values[index], this.values[index - 1]] = [previous, current];
+      let parent = this.values[parentIndex];
+      
+      if (parentIndex === 0) {
+        if (parent >= current) {
+          [this.values[parentIndex], this.values[index]] = [current, parent];
+          if (this.values[index - 1] > this.values[index]) {
+            [this.values[index - 1], this.values[index]] = [this.values[index], this.values[index - 1]];
+            break;
+          }
+        } else {
+          if (this.values[index - 1] > this.values[index]) {
+            [this.values[index - 1], this.values[index]] = [this.values[index], this.values[index - 1]];
+          }
+          break;
+        }
+      } else {
+        //check for right value
+        let isRight = index % parentIndex === 2;
+        
+        if (isRight && this.values[index - 1] >= current) {
+          [this.values[index - 1], this.values[index]] = [this.values[index], this.values[index - 1]];
+        }
+        if (!isRight && parent >= current) {
+          [this.values[parentIndex], this.values[index]] = [current, parent]
+        } else if (parent < current) {
+          break;
         }
       }
-      let parent = this.values[parentIndex];
-      if (parent >= current) {
-        [this.values[parentIndex], this.values[index]] = [this.values[index], this.values[parentIndex]];
-        index = parentIndex;
-      } else break;
+      
     }
   }
   getMin() {
@@ -60,8 +78,6 @@ class MinHeap {
       [this.values[index], this.values[swap]] = [this.values[swap], this.values[index]];
       index = swap;
     }
-
-
 
     return min;
   }
@@ -106,7 +122,9 @@ class MinHeap {
 const heap = new MinHeap();
 heap.add(1)
 heap.add(5)
+console.log(heap)
 heap.add(2)
+console.log(heap)
 heap.add(6)
 console.log(heap)
 // console.log(heap.getMin())
@@ -155,7 +173,6 @@ class MaxHeap {
 
     while (index > 0) {
 
-    console.log(this.values)
     let parentIndex = Math.floor((index - 1)/ 2);
     let parent = this.values[parentIndex];
 
@@ -167,7 +184,12 @@ class MaxHeap {
             [this.values[index - 1], this.values[index]] = [this.values[index], this.values[index - 1]];
             break;
           }
-        } else { break; }
+        } else {
+              if (this.values[index - 1] < this.values[index]) {
+                [this.values[index - 1], this.values[index]] = [this.values[index], this.values[index - 1]];
+              }
+              break;
+            }
       } else {
         //check to see if i have a left or right value;
         let isRight = index % parentIndex === 2;
@@ -228,7 +250,7 @@ tree.add(2);
 tree.add(6);
 tree.add(1);
 console.log(tree)
-// console.log(tree.getMax());
+console.log(tree.getMax());
 
 //1/11 Maximum CPU Load challenge #2 problem (difficulty: hard)
 // We are given a list of Jobs. Each job has a Start time, an End time, and a CPU load when it is running. Our goal is to find the maximum CPU load at any time if all the jobs are running on the same machine.
