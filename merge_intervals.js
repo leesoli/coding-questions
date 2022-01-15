@@ -15,44 +15,20 @@ class MinHeap {
       let parentIndex = Math.floor((index - 1)/ 2);
       let parent = this.values[parentIndex];
       
-      if (parentIndex === 0) {
         if (parent >= current) {
           [this.values[parentIndex], this.values[index]] = [current, parent];
-          if (this.values[index - 1] > this.values[index]) {
-            [this.values[index - 1], this.values[index]] = [this.values[index], this.values[index - 1]];
-            break;
-          }
-        } else {
-          if (this.values[index - 1] > this.values[index]) {
-            [this.values[index - 1], this.values[index]] = [this.values[index], this.values[index - 1]];
-          }
-          break;
-        }
-      } else {
-        //check for right value
-        let isRight = index % parentIndex === 2;
-        
-        if (isRight && this.values[index - 1] >= current) {
-          [this.values[index - 1], this.values[index]] = [this.values[index], this.values[index - 1]];
-        }
-        if (!isRight && parent >= current) {
-          [this.values[parentIndex], this.values[index]] = [current, parent]
-        } else if (parent < current) {
-          break;
-        }
-      }
-      
+          index = parentIndex;
+        } else break;
     }
   }
   getMin() {
- 
     let min = this.values[0];
     let popped = this.values.pop();
     this.values[0] = popped;
-    let length = this.values.length;
 
     let index = 0;
-    let current = this.values[index];
+    let current = this.values[0];
+    let length = this.values.length;
 
     //continue to heapify array
     while (true) {
@@ -69,11 +45,11 @@ class MinHeap {
       }
       if (rightChildIndex < length) {
         rightChild = this.values[rightChildIndex];
-        if ((swap === null && current > rightChild) || (swap !== null && leftChild < rightChild)) {
+        if ((swap === null && current > rightChild) || (swap !== null && leftChild > rightChild)) {
           swap = rightChildIndex;
         }
       }
- 
+      
       if (swap === null) { break; }
       [this.values[index], this.values[swap]] = [this.values[swap], this.values[index]];
       index = swap;
@@ -122,16 +98,12 @@ class MinHeap {
 const heap = new MinHeap();
 heap.add(1)
 heap.add(5)
-console.log(heap)
 heap.add(2)
-console.log(heap)
 heap.add(6)
-console.log(heap)
-// console.log(heap.getMin())
-// console.log(heap)
-// console.log(heap.getMin())
-// console.log(heap)
-// console.log(heap.getMin())
+console.log(heap.getMin())
+console.log(heap.getMin())
+console.log(heap.getMin())
+console.log(heap.getMin())
 
 
 // input = [[new Interval(1, 3), new Interval(5, 6)], [
@@ -160,97 +132,97 @@ console.log(heap)
 // console.log(result);
 
 //1/13 Implementing Max Heap in Javascript
-class MaxHeap {
-  constructor() {
-    this.values = []; 
-  }
-  //store the largest value as parent node
-  add(value) {
-    this.values.push(value);
-    //check to see the value added is lower than its parent
-    let index = this.values.length - 1;
-    let current = this.values[index];
+// class MaxHeap {
+//   constructor() {
+//     this.values = []; 
+//   }
+//   //store the largest value as parent node
+//   add(value) {
+//     this.values.push(value);
+//     //check to see the value added is lower than its parent
+//     let index = this.values.length - 1;
+//     let current = this.values[index];
 
-    while (index > 0) {
+//     while (index > 0) {
 
-    let parentIndex = Math.floor((index - 1)/ 2);
-    let parent = this.values[parentIndex];
+//     let parentIndex = Math.floor((index - 1)/ 2);
+//     let parent = this.values[parentIndex];
 
-    //compare left and right child values, switch if the left is less than the right
-      if (parentIndex === 0) {
-        if (parent <= current) {
-          [this.values[parentIndex], this.values[index]] = [current, parent];
-          if (this.values[index - 1] < this.values[index]) {
-            [this.values[index - 1], this.values[index]] = [this.values[index], this.values[index - 1]];
-            break;
-          }
-        } else {
-              if (this.values[index - 1] < this.values[index]) {
-                [this.values[index - 1], this.values[index]] = [this.values[index], this.values[index - 1]];
-              }
-              break;
-            }
-      } else {
-        //check to see if i have a left or right value;
-        let isRight = index % parentIndex === 2;
+//     //compare left and right child values, switch if the left is less than the right
+//       if (parentIndex === 0) {
+//         if (parent <= current) {
+//           [this.values[parentIndex], this.values[index]] = [current, parent];
+//           if (this.values[index - 1] < this.values[index]) {
+//             [this.values[index - 1], this.values[index]] = [this.values[index], this.values[index - 1]];
+//             break;
+//           }
+//         } else {
+//               if (this.values[index - 1] < this.values[index]) {
+//                 [this.values[index - 1], this.values[index]] = [this.values[index], this.values[index - 1]];
+//               }
+//               break;
+//             }
+//       } else {
+//         //check to see if i have a left or right value;
+//         let isRight = index % parentIndex === 2;
 
-        // if it is a right value, need to compare with left value, and switch numbers if left is less than right.
-        if (isRight && this.values[index - 1] <= current) {
-          [this.values[index - 1], this.values[index]] = [this.values[index], this.values[index - 1]]
-        }
-        if (parent <= current && !isRight) {
-        [this.values[parentIndex], this.values[index]] = [current, parent];
-        index = parentIndex;
-        } else if (parent > current) {
-          break;
-        }
-      }
-    }
-  }
-  getMax() {
-    const max = this.values[0];
-    //move the last value as the first value in heap
-    let lastValue = this.values.pop();
-    this.values[0] = lastValue;
+//         // if it is a right value, need to compare with left value, and switch numbers if left is less than right.
+//         if (isRight && this.values[index - 1] <= current) {
+//           [this.values[index - 1], this.values[index]] = [this.values[index], this.values[index - 1]]
+//         }
+//         if (parent <= current && !isRight) {
+//         [this.values[parentIndex], this.values[index]] = [current, parent];
+//         index = parentIndex;
+//         } else if (parent > current) {
+//           break;
+//         }
+//       }
+//     }
+//   }
+//   getMax() {
+//     const max = this.values[0];
+//     //move the last value as the first value in heap
+//     let lastValue = this.values.pop();
+//     this.values[0] = lastValue;
 
-    //continue to balance the heap (heapify)
-    //check left and right child nodes;
-    let index = 0;
-    let current = this.values[index];
-    let length = this.values.length;
+//     //continue to balance the heap (heapify)
+//     //check left and right child nodes;
+//     let index = 0;
+//     let current = this.values[index];
+//     let length = this.values.length;
 
-    while (true) {
-      let leftChildIndex = index * 2 + 1;
-      let rightChildIndex = index * 2 + 2;
-      let leftChild, rightChild;
-      let swap = null;
+//     while (true) {
+//       let leftChildIndex = index * 2 + 1;
+//       let rightChildIndex = index * 2 + 2;
+//       let leftChild, rightChild;
+//       let swap = null;
 
-      if (leftChildIndex < length) {
-        let leftChild = this.values[leftChildIndex];
-        if (current < leftChild) { swap = leftChildIndex; }
-      }
-      if (rightChildIndex < length) {
-        let rightChild = this.values[rightChildIndex];
-        if ((swap === null && current < rightChild) || (swap !== null && leftChild < rightChild)) {
-          swap = rightChildIndex;
-        }
-      }
-      if (swap === null) { break; }
-      [this.values[index], this.values[swap]] = [this.values[swap], this.values[index]];
-      index = swap;
-    }
-    return max;
-  }
+//       if (leftChildIndex < length) {
+//         let leftChild = this.values[leftChildIndex];
+//         if (current < leftChild) { swap = leftChildIndex; }
+//       }
+//       if (rightChildIndex < length) {
+//         let rightChild = this.values[rightChildIndex];
+//         if ((swap === null && current < rightChild) || (swap !== null && leftChild < rightChild)) {
+//           swap = rightChildIndex;
+//         }
+//       }
+//       if (swap === null) { break; }
+//       [this.values[index], this.values[swap]] = [this.values[swap], this.values[index]];
+//       index = swap;
+//     }
+//     return max;
+//   }
 
-}
+// }
 
-const tree = new MaxHeap();
-tree.add(4);
-tree.add(2);
-tree.add(6);
-tree.add(1);
-console.log(tree)
-console.log(tree.getMax());
+// const tree = new MaxHeap();
+// tree.add(4);
+// tree.add(2);
+// tree.add(6);
+// tree.add(1);
+// console.log(tree)
+// console.log(tree.getMax());
 
 //1/11 Maximum CPU Load challenge #2 problem (difficulty: hard)
 // We are given a list of Jobs. Each job has a Start time, an End time, and a CPU load when it is running. Our goal is to find the maximum CPU load at any time if all the jobs are running on the same machine.
