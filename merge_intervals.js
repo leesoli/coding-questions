@@ -15,7 +15,7 @@ class MinHeap {
       let parentIndex = Math.floor((index - 1)/ 2);
       let parent = this.values[parentIndex];
       
-        if (parent >= current) {
+        if (parent.start >= current.start) {
           [this.values[parentIndex], this.values[index]] = [current, parent];
           index = parentIndex;
         } else break;
@@ -59,60 +59,75 @@ class MinHeap {
   }
 }
 
-// class Interval {
-//     constructor(start, end) {
-//         this.start = start;
-//         this.end = end;
-//     }
+class Interval {
+    constructor(start, end) {
+        this.start = start;
+        this.end = end;
+    }
 
-//     get_interval() {
-//         return "[" + this.start + ", " + this.end + "]";
-//     }
-// };
+    get_interval() {
+        return "[" + this.start + ", " + this.end + "]";
+    }
+};
 
 
 
-// const find_employee_free_time = function(schedule) {
-//     result = [];
-//     const minHeap = new MaxHeap();
-//     //iterate through all the schedules add value to heap
+const find_employee_free_time = function(schedule) {
+    result = [];
+    const minHeap = new MinHeap();
+    //iterate through all the schedules add value to heap
 
-//     for (let i = 0; i < schedule.length; i++) {
-//       for (let j = 0; j < schedule[i].length; j++) {
-//         console.log(schedule[i][j].start)
-//         minHeap.add(schedule[i][j].start)
-//       }
-//     }
-//     console.log(minHeap)
+    for (let i = 0; i < schedule.length; i++) {
+      for (let j = 0; j < schedule[i].length; j++) {
+        minHeap.add(schedule[i][j])
+      }
+    }
+    
+    let minimum = minHeap.getMin();
+    let start = minimum.start;
+    let end = minimum.end;
+
+    for (let i = 1; i <= minHeap.values.length; i++) {
+      let nextValue = minHeap.getMin();
+      if (nextValue.start > end) {
+        console.log(nextValue)
+        result.push(new Interval(end, nextValue.start));
+        start = nextValue.start;
+        end = nextValue.end;
+      } else {
+        end = Math.max(nextValue.end, end);
+      }
+    }
   
-//     //iterate through values in heap, check for overlapping values
-//     //if they do, merge those values
-//     //if not, push to result
+  
+    //iterate through values in heap, check for overlapping values
+    //if they do, merge those values
+    //if not, push to result
 
-//     return result;
-// };
+    return result;
+};
 
 //emp 1: 1-3, 5-6, emp 2: 2-3, 6-8.  //3-5
 //min heap: 1-3, 2-3, 5-6, 6-8. 
 
-const heap = new MinHeap();
-heap.add(1)
-heap.add(5)
-heap.add(2)
-heap.add(6)
-console.log(heap.getMin())
-console.log(heap.getMin())
-console.log(heap.getMin())
-console.log(heap.getMin())
+// const heap = new MinHeap();
+// heap.add(1)
+// heap.add(5)
+// heap.add(2)
+// heap.add(6)
+// console.log(heap.getMin())
+// console.log(heap.getMin())
+// console.log(heap.getMin())
+// console.log(heap.getMin())
 
 
-// input = [[new Interval(1, 3), new Interval(5, 6)], [
-//     new Interval(2, 3), new Interval(6, 8)]];
-// intervals = find_employee_free_time(input)
-// result = "Free intervals: ";
-// for(i=0; i < intervals.length; i++)
-//   result += intervals[i].get_interval();
-// console.log(result); //[3,5]
+input = [[new Interval(1, 3), new Interval(2, 3)], [
+    new Interval(5, 6), new Interval(6, 8)]];
+intervals = find_employee_free_time(input)
+result = "Free intervals: ";
+for(i=0; i < intervals.length; i++)
+  result += intervals[i].get_interval();
+console.log(result); //[3,5]
 
 
 // input = [[new Interval(1, 3), new Interval(9, 12)], [

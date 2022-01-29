@@ -1,2 +1,2 @@
 language = "nodejs"
-run = "node merge_intervals.js"
+run = "node daily_questions.js"
