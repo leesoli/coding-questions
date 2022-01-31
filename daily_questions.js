@@ -51,31 +51,82 @@
 // n ≤ 100,000 where n is the length of nums
 // 1 ≤ nums[i] ≤ 10,000 
 
-//input nums = [1, 4, 3, 5]
-//1
 
-// If we change the 3 to 2 then nums[0] + nums[3] = nums[1] + nums[2] = 6
-
-//divide the number by two.
-//find the number that equal that sum
-
-// i = 0, 1 + 5 = 6
-// i = 1, 4 + 3 = 7
-// i = 2, 4 + 3 = 7
-// i = 3, 1 + 5 = 6
 const equal_sum = function (nums) {
-//evaluate possible sums up to half the array
-let n = nums.length / 2 - 1;
+let sum = {}
+let operations = 0;
+let n = nums.length / 2 ;
+let sums = 0;
+let max = 0;
+let min = Infinity;
+let pairs = [];
+let mostOccuringSum;
+let maxOccurence = 1;
 
-//save in set
-let set = new Set();
+for (let i = 0; i < n; i++) {
+    let currentSum = nums[i] + nums[nums.length - 1 - i]
+    let firstValue = nums[i];
+    let secondValue = nums[nums.length - 1 - i]
+  
+    max = Math.max(firstValue, secondValue, max);
 
-for (let i = 0; i <= n; i++) {
-  set.add(nums[i] + nums[nums.length - 1 - i]);
+    if (sum[currentSum] === undefined) {
+        sum[currentSum] = 1;
+        sums++;
+    } else {
+        sum[currentSum]++;
+    }
+}
+console.log(max, 'max')
+
+//if there is only one pair, no operations need to be done
+if (sums === 1) {
+  return operations;
+} else {
+  
+  while (n < nums.length) {
+    let firstValue = nums[n];
+    let secondValue = nums[nums.length - 1 - n];
+    
+    if (firstValue === max) {
+      min = Math.min(min, secondValue)
+    } else if (secondValue === max) {
+      min = Math.min(min, firstValue)
+    }
+    pairs.push([firstValue, secondValue])
+    n++;
+  }
+
+  //find most occuring sum
+  for (let occurence in sum) {
+    if (sum[occurence] > maxOccurence) {
+      maxOccurence = sum[occurence];
+      mostOccuringSum = Number(occurence);
+    } else if (sum[occurence] === maxOccurence) {
+      mostOccuringSum = Number(occurence);
+    }
+  }
+  
+  for (let i = 0; i < pairs.length; i++) {
+    let currentSum = pairs[i][0] + pairs[i][1];
+    if (currentSum === mostOccuringSum) {
+      continue;
+    } else if (pairs[i][0] < min && pairs[i][1] < min) {
+      operations += 2;
+    } else {
+      operations += 1;
+    }
+  }
 }
 
-//return the size of the set - 1 because for how many different sums there are, we do 1 less operation
-return set.size - 1;
+return operations;
+
 }
 
-console.log(equal_sum([1, 4, 3, 5]))
+// console.log(equal_sum([1, 4, 3, 5])) //1
+// console.log(equal_sum([1, 4, 1, 5, 3, 5])) //1
+// console.log(equal_sum([1, 4, 3, 5, 4, 5]))   //1
+// console.log(equal_sum([1, 5])) //0
+// console.log(equal_sum([1, 4, 3, 4, 3, 5])) //1
+// console.log(equal_sum([1, 2, 2, 1])) //2
+console.log(equal_sum([3, 2, 2, 3])) //1
