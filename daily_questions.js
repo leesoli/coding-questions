@@ -52,81 +52,136 @@
 // 1 ≤ nums[i] ≤ 10,000 
 
 
-const equal_sum = function (nums) {
-let sum = {}
-let operations = 0;
-let n = nums.length / 2 ;
-let sums = 0;
-let max = 0;
-let min = Infinity;
-let pairs = [];
-let mostOccuringSum;
-let maxOccurence = 1;
+// const equal_sum = function (nums) {
+// let sum = {}
+// let operations = 0;
+// let n = nums.length / 2 ;
+// let sums = 0;
+// let max = 0;
+// let min = Infinity;
+// let pairs = [];
+// let mostOccuringSum;
+// let maxOccurence = 1;
 
-for (let i = 0; i < n; i++) {
-    let currentSum = nums[i] + nums[nums.length - 1 - i]
-    let firstValue = nums[i];
-    let secondValue = nums[nums.length - 1 - i]
+// for (let i = 0; i < n; i++) {
+//     let currentSum = nums[i] + nums[nums.length - 1 - i]
+//     let firstValue = nums[i];
+//     let secondValue = nums[nums.length - 1 - i]
   
-    max = Math.max(firstValue, secondValue, max);
+//     max = Math.max(firstValue, secondValue, max);
 
-    if (sum[currentSum] === undefined) {
-        sum[currentSum] = 1;
-        sums++;
-    } else {
-        sum[currentSum]++;
-    }
-}
-console.log(max, 'max')
+//     if (sum[currentSum] === undefined) {
+//         sum[currentSum] = 1;
+//         sums++;
+//     } else {
+//         sum[currentSum]++;
+//     }
+// }
 
-//if there is only one pair, no operations need to be done
-if (sums === 1) {
-  return operations;
-} else {
+// //if there is only one pair, no operations need to be done
+// if (sums === 1) {
+//   return operations;
+// } else {
   
-  while (n < nums.length) {
-    let firstValue = nums[n];
-    let secondValue = nums[nums.length - 1 - n];
+//   while (n < nums.length) {
+//     let firstValue = nums[n];
+//     let secondValue = nums[nums.length - 1 - n];
     
-    if (firstValue === max) {
-      min = Math.min(min, secondValue)
-    } else if (secondValue === max) {
-      min = Math.min(min, firstValue)
-    }
-    pairs.push([firstValue, secondValue])
-    n++;
-  }
+//     if (firstValue === max) {
+//       min = Math.min(min, secondValue)
+//     } else if (secondValue === max) {
+//       min = Math.min(min, firstValue)
+//     }
+//     pairs.push([firstValue, secondValue])
+//     n++;
+//   }
 
-  //find most occuring sum
-  for (let occurence in sum) {
-    if (sum[occurence] > maxOccurence) {
-      maxOccurence = sum[occurence];
-      mostOccuringSum = Number(occurence);
-    } else if (sum[occurence] === maxOccurence) {
-      mostOccuringSum = Number(occurence);
-    }
-  }
+//   //find most occuring sum
+//   for (let occurence in sum) {
+//     if (sum[occurence] > maxOccurence) {
+//       maxOccurence = sum[occurence];
+//       mostOccuringSum = Number(occurence);
+//     } else if (sum[occurence] === maxOccurence) {
+//       mostOccuringSum = Number(occurence);
+//     }
+//   }
   
-  for (let i = 0; i < pairs.length; i++) {
-    let currentSum = pairs[i][0] + pairs[i][1];
-    if (currentSum === mostOccuringSum) {
+//   for (let i = 0; i < pairs.length; i++) {
+//     let currentSum = pairs[i][0] + pairs[i][1];
+//     if (currentSum === mostOccuringSum) {
+//       continue;
+//     } else if (pairs[i][0] < min && pairs[i][1] < min) {
+//       operations += 2;
+//     } else {
+//       operations += 1;
+//     }
+//   }
+// }
+
+// return operations;
+
+// }
+
+const equal_sum = function (nums) {
+  let minOperation = Infinity;
+
+//find the max value
+let max = -Infinity;
+let pairSum = new Set();
+let uniqueSum = 0;
+let n = nums.length / 2;
+
+//store the sum of the pairs in a set
+for (let i = 0; i < nums.length; i++) {
+  max = Math.max(max, nums[i]);
+  let currentSum = nums[i] + nums[nums.length - 1 - i] 
+  pairSum.add(currentSum);
+}
+
+//iterate through the set, keep value of numbers in the set
+pairSum.forEach((sum) => {
+  let currentOperation = Infinity;
+  uniqueSum++;
+
+  for (let i = 0; i < n; i++) {
+    let firstValue = nums[i];
+    let secondValue = nums[nums.length - 1 - i];
+    let currentSum = firstValue + secondValue;
+    let firstCondition = firstValue + max < sum;
+    let secondCondition = secondValue + max < sum;
+    if (sum === currentSum) {
       continue;
-    } else if (pairs[i][0] < min && pairs[i][1] < min) {
-      operations += 2;
-    } else {
-      operations += 1;
+    } else if (firstCondition || secondCondition) {
+      currentOperation = Math.min(currentOperation, 2);
+    } else if (!firstCondition && !secondCondition) {
+      currentOperation = Math.min(currentOperation, 1)
     }
+    console.log(currentOperation, 'currentOperation')
+  
+    minOperation = Math.min(minOperation, currentOperation)
   }
+})
+
+if (uniqueSum === 1 || minOperation === Infinity) {
+  return 0;
+} else {
+  return minOperation
 }
 
-return operations;
+console.log(uniqueSum)
+//find the number of operations to get the current sum
 
+//update my value of min operations to the minimum value
+
+//return min operations
 }
 
-// console.log(equal_sum([1, 4, 3, 5])) //1
-// console.log(equal_sum([1, 4, 1, 5, 3, 5])) //1
-// console.log(equal_sum([1, 4, 3, 5, 4, 5]))   //1
-// console.log(equal_sum([1, 5])) //0
-// console.log(equal_sum([1, 4, 3, 4, 3, 5])) //1
-// console.log(equal_sum([1, 2, 2, 1])) //2
+
+
+console.log(equal_sum([1, 4, 3, 5])) //1
+console.log(equal_sum([1, 4, 1, 5, 3, 5])) //1
+console.log(equal_sum([1, 4, 3, 5, 4, 5]))   //1
+console.log(equal_sum([1, 5])) //0
+console.log(equal_sum([1, 4, 3, 4, 3, 5])) //1
+console.log(equal_sum([1, 2, 2, 1])) //2
 console.log(equal_sum([3, 2, 2, 3])) //1
