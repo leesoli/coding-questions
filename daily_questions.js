@@ -1,3 +1,61 @@
+//2/1/2022
+// Given the head of a singly linked list, return true if it is a palindrome.
+// Follow up: Could you do it in O(n) time and O(1) space?
+function ListNode(val, next) {
+      this.val = (val===undefined ? 0 : val)
+      this.next = (next===undefined ? null : next)
+}
+
+function isPalindrome(head) {
+
+  //find the middle point of the linked list
+  let slow = head;
+  let fast = head;
+ 
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+
+  //reverse the later half of the linked list
+  let reversedList = reverse(slow);
+
+  //compare the reversed list with given list
+  while(head && reversedList) {
+    if (head.val != reversedList.val) {
+      return false;
+    }
+      head = head.next;
+      reversedList = reversedList.next;
+    }
+    return true;
+
+}
+
+const reverse = function (head) {
+  let prev = null;
+  let current = head;
+  while (current) {
+    next = current.next;
+    current.next = prev;
+    prev = current;
+    current = next;
+  }
+    return prev;
+}
+
+
+
+let n1 = new ListNode(1);
+n1.next = new ListNode(2);
+n1.next.next = new ListNode(2);
+n1.next.next.next = new ListNode(1);
+
+let n2 = new ListNode(1);
+n2.next = new ListNode(2);
+console.log(isPalindrome(n1)); //true
+console.log(isPalindrome(n2)); //false
+
 //1/28/2022
 //leetcode 416. Partition Equal Subset Sum
 // Given a non-empty array nums containing only positive integers, find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal.
@@ -122,66 +180,66 @@
 
 // }
 
-const equal_sum = function (nums) {
-  let minOperation = Infinity;
+// const equal_sum = function (nums) {
+//   let minOperation = Infinity;
 
-//find the max value
-let max = -Infinity;
-let pairSum = new Set();
-let uniqueSum = 0;
-let n = nums.length / 2;
+// //find the max value
+// let max = -Infinity;
+// let pairSum = new Set();
+// let uniqueSum = 0;
+// let n = nums.length / 2;
 
-//store the sum of the pairs in a set
-for (let i = 0; i < nums.length; i++) {
-  max = Math.max(max, nums[i]);
-  let currentSum = nums[i] + nums[nums.length - 1 - i] 
-  pairSum.add(currentSum);
-}
+// //store the sum of the pairs in a set
+// for (let i = 0; i < nums.length; i++) {
+//   max = Math.max(max, nums[i]);
+//   let currentSum = nums[i] + nums[nums.length - 1 - i] 
+//   pairSum.add(currentSum);
+// }
 
-//iterate through the set, keep value of numbers in the set
-pairSum.forEach((sum) => {
-  let currentOperation = Infinity;
-  uniqueSum++;
+// //iterate through the set, keep value of numbers in the set
+// pairSum.forEach((sum) => {
+//   let currentOperation = Infinity;
+//   uniqueSum++;
 
-  for (let i = 0; i < n; i++) {
-    let firstValue = nums[i];
-    let secondValue = nums[nums.length - 1 - i];
-    let currentSum = firstValue + secondValue;
-    let firstCondition = firstValue + max < sum;
-    let secondCondition = secondValue + max < sum;
-    if (sum === currentSum) {
-      continue;
-    } else if (firstCondition || secondCondition) {
-      currentOperation = Math.min(currentOperation, 2);
-    } else if (!firstCondition && !secondCondition) {
-      currentOperation = Math.min(currentOperation, 1)
-    }
-    console.log(currentOperation, 'currentOperation')
-  
-    minOperation = Math.min(minOperation, currentOperation)
-  }
-})
+//   for (let i = 0; i < n; i++) {
+//     let firstValue = nums[i];
+//     let secondValue = nums[nums.length - 1 - i];
+//     let currentSum = firstValue + secondValue;
+//     let firstCondition = firstValue + max < sum;
+//     let secondCondition = secondValue + max < sum;
+//     if (sum === currentSum) {
+//       continue;
+//     } else if (firstCondition || secondCondition) {
+//       currentOperation = Math.min(currentOperation, 2);
+//     } else if (!firstCondition && !secondCondition) {
+//       currentOperation = Math.min(currentOperation, 1)
+//     }
+ 
+//     minOperation = Math.min(minOperation, currentOperation)
+//   }
+// })
 
-if (uniqueSum === 1 || minOperation === Infinity) {
-  return 0;
-} else {
-  return minOperation
-}
+// if (uniqueSum === 1 || minOperation === Infinity) {
+//   return 0;
+// } else {
+//   return minOperation
+// }
 
-console.log(uniqueSum)
-//find the number of operations to get the current sum
+// //find the number of operations to get the current sum
 
-//update my value of min operations to the minimum value
+// //update my value of min operations to the minimum value
 
-//return min operations
-}
+// //return min operations
+// }
 
 
 
-console.log(equal_sum([1, 4, 3, 5])) //1
-console.log(equal_sum([1, 4, 1, 5, 3, 5])) //1
-console.log(equal_sum([1, 4, 3, 5, 4, 5]))   //1
-console.log(equal_sum([1, 5])) //0
-console.log(equal_sum([1, 4, 3, 4, 3, 5])) //1
-console.log(equal_sum([1, 2, 2, 1])) //2
-console.log(equal_sum([3, 2, 2, 3])) //1
+// console.log(equal_sum([1, 4, 3, 5])) //1
+// console.log(equal_sum([1, 4, 1, 5, 3, 5])) //1
+// console.log(equal_sum([1, 4, 3, 5, 4, 5]))   //1
+// console.log(equal_sum([1, 5])) //0
+// console.log(equal_sum([1, 4, 3, 4, 3, 5])) //1
+// console.log(equal_sum([1, 2, 2, 1])) //2
+// console.log(equal_sum([3, 2, 2, 3])) //1
+
+
