@@ -1,60 +1,110 @@
+//2/3/2022
+// 75. Sort Colors
+// Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
+
+// We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively.
+
+// You must solve this problem without using the library's sort function.
+
+//  Could you come up with a one-pass algorithm using only constant extra space?
+
+var sortColors = function(nums) {
+//bubble sort space = O(1), time= O (n*n) best case O(n)
+  let i, j;
+  // for (i = 0; i < nums.length - 1; i++) {
+  //   for (j = 0; j < nums.length - i - 1; j++) {
+  //     if (nums[j] > nums[j + 1]) {
+  //       swap(nums, j, j + 1);
+  //     }
+  //   }
+  // }
+  // return nums;
+
+//selection sort. space = O(1), time= O (n*n)
+  // for (i = 0; i < nums.length - 1; i++) { //moves the boundary of unsorted array
+  //   let smallestIndex = i;
+  //   for (j = i + 1; j < nums.length; j++) {
+  //     //looks for the smallest number
+  //     if (nums[j] < nums[smallestIndex]) {
+  //       smallestIndex = j;
+  //     }
+  //   }
+  //   //swap min element with current index
+  //   swap(nums, i, smallestIndex);
+  // }
+  // return nums;
+
+//insertion sort
+
+}
+
+const swap = function (arr, i1, i2) {
+  let temp = arr[i1];
+  arr[i1] = arr[i2];
+  arr[i2] = temp;
+}
+
+
+console.log(sortColors([2,0,2,1,1,0])) //[0,0,1,1,2,2]
+console.log(sortColors([2,0,1])) //[0, 1, 2]
+
 //2/1/2022
 // Given the head of a singly linked list, return true if it is a palindrome.
 // Follow up: Could you do it in O(n) time and O(1) space?
-function ListNode(val, next) {
-      this.val = (val===undefined ? 0 : val)
-      this.next = (next===undefined ? null : next)
-}
+// function ListNode(val, next) {
+//       this.val = (val===undefined ? 0 : val)
+//       this.next = (next===undefined ? null : next)
+// }
 
-function isPalindrome(head) {
+// function isPalindrome(head) {
 
-  //find the middle point of the linked list
-  let slow = head;
-  let fast = head;
+//   //find the middle point of the linked list
+//   let slow = head;
+//   let fast = head;
  
-  while (fast && fast.next) {
-    slow = slow.next;
-    fast = fast.next.next;
-  }
+//   while (fast && fast.next) {
+//     slow = slow.next;
+//     fast = fast.next.next;
+//   }
 
-  //reverse the later half of the linked list
-  let reversedList = reverse(slow);
+//   //reverse the later half of the linked list
+//   let reversedList = reverse(slow);
 
-  //compare the reversed list with given list
-  while(head && reversedList) {
-    if (head.val != reversedList.val) {
-      return false;
-    }
-      head = head.next;
-      reversedList = reversedList.next;
-    }
-    return true;
+//   //compare the reversed list with given list
+//   while(head && reversedList) {
+//     if (head.val != reversedList.val) {
+//       return false;
+//     }
+//       head = head.next;
+//       reversedList = reversedList.next;
+//     }
+//     return true;
 
-}
+// }
 
-const reverse = function (head) {
-  let prev = null;
-  let current = head;
-  while (current) {
-    next = current.next;
-    current.next = prev;
-    prev = current;
-    current = next;
-  }
-    return prev;
-}
+// const reverse = function (head) {
+//   let prev = null;
+//   let current = head;
+//   while (current) {
+//     next = current.next;
+//     current.next = prev;
+//     prev = current;
+//     current = next;
+//   }
+//     return prev;
+// }
 
 
 
-let n1 = new ListNode(1);
-n1.next = new ListNode(2);
-n1.next.next = new ListNode(2);
-n1.next.next.next = new ListNode(1);
+// let n1 = new ListNode(1);
+// n1.next = new ListNode(2);
+// n1.next.next = new ListNode(2);
+// n1.next.next.next = new ListNode(1);
 
-let n2 = new ListNode(1);
-n2.next = new ListNode(2);
-console.log(isPalindrome(n1)); //true
-console.log(isPalindrome(n2)); //false
+// let n2 = new ListNode(1);
+// n2.next = new ListNode(2);
+// console.log(isPalindrome(n1)); //true
+// console.log(isPalindrome(n2)); //false
 
 //1/28/2022
 //leetcode 416. Partition Equal Subset Sum
