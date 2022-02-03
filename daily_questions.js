@@ -35,7 +35,18 @@ var sortColors = function(nums) {
   // return nums;
 
 //insertion sort
+//looking at i, and j value;  time complexity = O(n) best, O(n*n) worst, O(1)
+for (i = 1; i < nums.length; i++) {
+  let element = nums[i];
+  j = i - 1;
 
+  while (j >= 0 && element < nums[j]) {
+    nums[j + 1] = nums[j];
+    j = j - 1;
+  }
+  nums[j + 1] = element;
+}
+return nums;
 }
 
 const swap = function (arr, i1, i2) {
